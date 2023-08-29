@@ -196,36 +196,6 @@ services:
 
 EOF
 
-# Install Onlyoffice without mobile device limitation
-cd /
-mkdir docker/ && cd docker/
-mkdir onlyoffice && cd onlyoffice
-touch docker-compose.yml
-cat <<EOF >>/docker/onlyoffice/docker-compose.yml
-version: "3.7"
-
-services:
-  documentserver:
-    container_name: documentserver
-    image: thomisus/onlyoffice-documentserver-unlimited:latest
-    stdin_open: true
-    tty: true
-    restart: always
-    ports:
-      - 85:80
-      - 445:443
-    volumes:
-      - ./onlyoffice/data:/var/www/onlyoffice/Data
-      - ./onlyoffice/log:/var/log/onlyoffice
-    environment:
-      - JWT_ENABLED=true
-      - JWT_SECRET=B5ks99fCtn7T2S
-      - JWT_HEADER=AuthorizationJwt
-
-EOF
-
-docker-compose up -d
-
 # Nextcloud Adjustments
 cp /var/www/nextcloud/config/config.php /var/www/nextcloud/config/config.php.bk
 sed -i '/);/d' /var/www/nextcloud/config/config.php
@@ -239,13 +209,6 @@ sudo cat <<EOF >>/var/www/nextcloud/config/config.php
   array (
     'host' => 'localhost',
     'port' => 6379,
-  ),
-  'onlyoffice' => 
-  array (
-    'jwt_secret' => 'B5ks99fCtn7T2S',
-    'jwt_header' => 'AuthorizationJwt',
-    'editors_check_interval' => 3624,
-    'verify_peer_off' => 'true',
   ),
   'enabledPreviewProviders' => 
   array (
