@@ -312,6 +312,11 @@ unset DBPASS2
 
 sudo a2dissite 000-default && sleep 2 && sudo systemctl restart apache2
 
+# Output TODO items with formatting
+echo -e "\n\n\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://$NEXTCLOUD_IP to verify NextCloud configuration.\033[0m"
+echo -e "\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://$NEXTCLOUD_IP:81 to configure the NGINX PROXY MANAGER.\033[0m\n\n"
+
+
 echo -e "\n\n\033[1;33m[\033[0m\033[1;32m OK \033[0;33m\033[1;33m]\033[0m \033[0mINSTALLATION COMPLETED!"
 echo -e "\033[1;32m───────────────────────────────────────────────────────────────────────────────────────────────────────\033[0m"
 echo -e "\033[1;32mThank you for using this script!"
