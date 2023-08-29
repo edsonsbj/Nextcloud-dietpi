@@ -342,3 +342,23 @@ echo ""
 echo -e "\033[1;32mYour contribution helps maintain this project and enables the creation of more useful features in the future.\033[0m"
 echo -e "\033[1;32mThank you for your support!\033[0m"
 echo -e "\033[1;32m───────────────────────────────────────────────────────────────────────────────────────────────────────\033[0m"
+
+
+#AFTER NGINX CONFIGURATION
+
+# root@DietPi:/var/www/nextcloud/config# nano config.php
+#  'trusted_domains' =>
+#  array (
+#    0 => 'localhost',
+#    1 => '192.168.0.70',
+#  ),
+#  'overwritehost' => 'domain.duckdns.org:8443',
+#  'overwriteprotocol' => 'https',
+#  'datadirectory' => '/media/myCloudDrive/data',
+
+
+#./cli/php.ini:memory_limit = 1G
+#./fpm/php.ini:memory_limit = 1G
+#/etc/php/8.2/apache/php.ini:memory_limit = 1G
+#./fpm/pool.d/www.conf:php_admin_value[memory_limit] = 1G
+#Ao que parece "post_max_size" também deve ser alterado apra 1024M
