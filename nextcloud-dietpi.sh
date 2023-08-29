@@ -174,7 +174,7 @@ echo \
 
 apt-get update
 
-apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+apt-get install docker docker-compose docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
 # Install Nginx Proxy Manager
 cd /
@@ -189,9 +189,9 @@ services:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
     ports:
-      - '8880:80'	# CHANGE THE PORT 8880 TO AN HTTP PORT OF YOUR CHOICE
+      - '8880:80' # CHANGE THE PORT 8880 TO AN HTTP PORT OF YOUR CHOICE
       - '81:81'
-      - '8443:443'	# CHANGE THE PORT 8443 TO AN HTTPS PORT OF YOUR CHOICE
+      - '8443:443' # CHANGE THE PORT 8443 TO AN HTTPS PORT OF YOUR CHOICE
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
