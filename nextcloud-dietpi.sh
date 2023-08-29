@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# THIS SCRIPT WAS TESTED IN:
+#	[X] Raspberry Pi 4B+ and 400
+#	[ ] External HDD/SSD
+#	[X] Flash USB (a.k.a Thumb Driver)
+#	[ ] NoIp Domain
+#	[ ] Cloudflare Domain
+#	[X] Duckdns Domain
+#	[ ] This script install OnlyOffice
+#	[X] This script DOES NOT install Onlyoffice
+
+
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
     echo "This script must be executed in the root directory of the system."
