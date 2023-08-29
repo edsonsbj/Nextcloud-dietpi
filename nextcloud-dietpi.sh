@@ -177,6 +177,8 @@ apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
 # Install Nginx Proxy Manager
+cd /
+mkdir docker/ && cd docker/
 cd /docker/
 mkdir nginx && cd nginx
 touch docker-compose.yml
