@@ -281,14 +281,14 @@ sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
 sudo umount /dev/sda1
 sudo mkfs.ext4 /dev/sda1
+UUID=$(sudo blkid -s UUID -o value /dev/sda1)
+sudo mount -a
+
+echo "UUID=$UUID /media/myCloudDrive ext4 defaults 0 0" | sudo tee -a /etc/fstab
 sudo mkdir /media/myCloudDrive		# Change this if you want to mount the drive elsewhere, like /mnt/, or change the name of the drive
 rsync -avh /var/www/nextcloud/data /media/myCloudDrive
 chown -R www-data:www-data /media/myCloudDrive/data
 chmod -R 770 /media/myCloudDrive/data
-
-UUID=$(sudo blkid -s UUID -o value /dev/sda1)
-echo "UUID=$UUID /media/myCloudDrive ext4 defaults 0 0" | sudo tee -a /etc/fstab
-sudo mount -a
 
 sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/nextcloud\/data',/" /var/www/nextcloud/config/config.php
 
