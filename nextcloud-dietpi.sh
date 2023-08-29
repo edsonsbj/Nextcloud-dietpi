@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# THIS SCRIPT IS FOR RASPBERRY PI WITH A FLASH USB DRIVE INSERTED (NOT A EXTERNAL HDD/SSD)
-# BACKUP FLASH USB/HDD/SDD WON'T BE INSTALLED IN THIS SCRIPT
-
-
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
     echo "This script must be executed in the root directory of the system."
@@ -13,7 +9,6 @@ echo "Changing to the root directory..."
 cd /
 echo "pwd is $(pwd)"
 echo "location of the database backup file is " '/'
-
 
 # Check if the site is online
 if ! wget --spider https://download.nextcloud.com/server/releases/latest.zip; then
@@ -31,16 +26,28 @@ if [ "$NEXTCLOUD_IP" != "$NEXTCLOUD_IP_VERIFY" ]; then
     exit 1
 fi
 
+# Function to read a password without special characters
+read_password() {
+    local input
+    while true; do
+        read -s -p "$1: " input
+        if [[ "$input" =~ ^[a-zA-Z0-9]+$ ]]; then
+            echo "$input"
+            break
+        else
+            echo "Password cannot contain special characters. Please try again."
+        fi
+    done
+}
+
 # Request username
 read -p "Enter desired Nextcloud Administrator username (Recommended to use \"admin\"): " NCUSER
 
 # Request user password
-read -s -p "Enter desired admin password for NextCloud: " NCPASS
-echo
+NCPASS=$(read_password "Enter desired admin password for NextCloud")
 
 # Request user password again for verification
-read -s -p "Enter admin password again for confirmation: " NCPASS2
-echo
+NCPASS2=$(read_password "Enter admin password again for confirmation")
 
 # Check if passwords match
 if [ "$NCPASS" != "$NCPASS2" ]; then
@@ -49,19 +56,16 @@ if [ "$NCPASS" != "$NCPASS2" ]; then
 fi
 
 # Request user password for the Database
-read -s -p "Enter desired password for the Database (preferably different from the previous one): " DBPASS
-echo
+DBPASS=$(read_password "Enter desired password for the Database (preferably different from the previous one)")
 
 # Request the password again for verification
-read -s -p "Enter the database password again for confirmation: " DBPASS2
-echo
+DBPASS2=$(read_password "Enter the database password again for confirmation")
 
 # Check if database passwords match
 if [ "$DBPASS" != "$DBPASS2" ]; then
     echo "Database passwords do not match. Please try again."
     exit 1
 fi
-
 
 # Log File
 LOGFILE="/var/log/install-nextcloud.log"
