@@ -290,7 +290,7 @@ rsync -avh /var/www/nextcloud/data /media/myCloudDrive
 chown -R www-data:www-data /media/myCloudDrive/data
 chmod -R 770 /media/myCloudDrive/data
 
-sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/nextcloud\/data',/" /var/www/nextcloud/config/config.php
+sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/data',/" /var/www/nextcloud/config/config.php
 
 # Replace trusted_domains in the config.php file
 sed -i "/'trusted_domains' =>/s/0 => 'localhost',/0 => 'localhost',\n    1 => '$NEXTCLOUD_IP',\n    2 => 'thepandacloud.duckdns.org',/" /var/www/nextcloud/config/config.php
