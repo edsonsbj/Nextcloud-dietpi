@@ -198,6 +198,8 @@ services:
 
 EOF
 
+docker-compose up -d
+
 # Nextcloud Adjustments
 cp /var/www/nextcloud/config/config.php /var/www/nextcloud/config/config.php.bk
 sed -i '/);/d' /var/www/nextcloud/config/config.php
