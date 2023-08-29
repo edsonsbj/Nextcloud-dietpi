@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# THIS SCRIPT IS FOR RASPBERRY PI WITH A FLASH USB DRIVE INSERTED (NOT A EXTERNAL HDD/SSD)
+# BACKUP FLASH USB/HDD/SDD WON'T BE INSTALLED IN THIS SCRIPT
+
+
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
     echo "This script must be executed in the root directory of the system."
