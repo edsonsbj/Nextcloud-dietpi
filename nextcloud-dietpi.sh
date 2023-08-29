@@ -276,7 +276,7 @@ chmod 600 /var/spool/cron/crontabs/root
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
 sudo umount /dev/sda1
-sudo mkfs.btrfs /dev/sda1
+sudo mkfs.ext4 /dev/sda1
 sudo mkdir /media/myCloudDrive		# Change this if you want to mount the drive elsewhere, like /mnt/, or change the name of the drive
 rsync -avh /var/www/nextcloud/data /media/myCloudDrive
 chown -R www-data:www-data /media/myCloudDrive/data
