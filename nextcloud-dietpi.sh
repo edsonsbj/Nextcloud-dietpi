@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # THIS SCRIPT WAS TESTED IN:
-#	[X] Raspberry Pi 4B+ and 400
+#	[X] Raspberry Pi 4B+
+#	[X] Raspberry Pi 400
 #	[ ] External HDD/SSD
 #	[X] Flash USB (a.k.a Thumb Driver)
 #	[ ] NoIp Domain
@@ -9,6 +10,10 @@
 #	[X] Duckdns Domain
 #	[ ] This script install OnlyOffice
 #	[X] This script DOES NOT install Onlyoffice
+#	[X] This script formats the external HDD/SDD or Flash USB
+#	[ ] This script DOES NOT formats the external HDD/SDD or Flash USB
+#	[X] This script formats the external HDD/SDD or Flash USB as EXT4
+#	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
 
 
 # Check if the user is in the Linux root directory
