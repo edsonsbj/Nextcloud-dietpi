@@ -1,4 +1,5 @@
-<img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="60" height="60"/>
+<img src="https://github.com/nextcloud/nextcloudpi/raw/master/ncp-app/img/app.svg" width="60" height="60"/>
+
 
 # nextcloud
 
