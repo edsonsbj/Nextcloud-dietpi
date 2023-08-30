@@ -15,6 +15,13 @@
 #	[X] This script formats the external HDD/SDD or Flash USB as EXT4
 #	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
 
+# Check if the script is executed by root
+#
+if [ "$(id -u)" != "0" ]
+then
+        errorecho "ERROR: This script must be executed as root!"
+        exit 1
+fi
 
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
@@ -99,6 +106,7 @@ UUID=$(sudo blkid -s UUID -o value /dev/sda1)
 echo "UUID=$UUID /media/myCloudDrive ext4 defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
 sudo mkdir /media/myCloudDrive # Change this if you want to mount the drive elsewhere, like /mnt/, or change the name of the drive
+sudo mount /dev/sda1 /media/myCloudDrive
 
 # Expand Swap Memory
 sudo swapoff -a
@@ -114,13 +122,6 @@ free -h
 exec > >(tee -i nextcloud-dietpi.log)
 exec 2>&1
 
-# Check if the script is executed by root
-#
-if [ "$(id -u)" != "0" ]
-then
-        errorecho "ERROR: This script must be executed as root!"
-        exit 1
-fi
 
 # Install Apache2, MariaDB, and PHP 8.2
 
@@ -138,7 +139,7 @@ sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php/8.2/fpm/php.ini
 sed -i 's/;date.timezone.*/date.timezone = America\/\Sao_Paulo/' /etc/php/8.2/fpm/php.ini
 sed -i 's/upload_max_filesize = .*/upload_max_filesize = 10240M/' /etc/php/8.2/fpm/php.ini
 sed -i 's/post_max_size = .*/post_max_size = 10240M/' /etc/php/8.2/fpm/php.ini
-a2dismod php8.2 && sleep 2 && a2enmod proxy_fcgi setenvif && sleep 2 && a2enconf php8.2-fpm && sleep 2 && systemctl restart php8.2-fpm && sleep 2 && systemctl restart apache22dismod php8.2 && sleep 2 && a2enmod proxy_fcgi setenvif && sleep 2 && a2enconf php8.2-fpm && sleep 2 && systemctl restart php8.2-fpm && sleep 2 && systemctl restart apache2
+a2dismod php8.2 && sleep 2 && a2enmod proxy_fcgi setenvif && sleep 2 && a2enconf php8.2-fpm && sleep 2 && systemctl restart php8.2-fpm && sleep 2 && systemctl restart apache2
 
 # Create the database for Nextcloud
 mysql -e "CREATE DATABASE $NC_DB;"
@@ -300,13 +301,11 @@ chmod 600 /var/spool/cron/crontabs/root
 # Change data directory for external storage
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
+rsync -avh /var/www/nextcloud /media/myCloudDrive
+chown -R www-data:www-data /media/myCloudDrive/nextcloud
+chmod -R 770 /media/myCloudDrive/nextcloud
 
-
-rsync -avh /var/www/nextcloud/data /media/myCloudDrive
-chown -R www-data:www-data /media/myCloudDrive/data
-chmod -R 770 /media/myCloudDrive/data
-
-sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/data',/" /var/www/nextcloud/config/config.php
+sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/nextcloud\/data',/" /var/www/nextcloud/config/config.php
 
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 
@@ -317,7 +316,7 @@ unset NCPASS2
 unset DBPASS
 unset DBPASS2
 
-sudo a2dissite 000-default && sleep 2 && sudo systemctl restart apache2
+#sudo a2dissite 000-default && sleep 2 && sudo systemctl restart apache2
 
 # Output TODO items with formatting
 echo -e "\n\n\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://$NEXTCLOUD_IP to verify NextCloud configuration.\033[0m"
