@@ -1,4 +1,4 @@
-<img src="https://github.com/nextcloud/nextcloudpi/raw/master/ncp-app/img/app.svg" width="60" height="60"/>
+<img src="https://github.com/nextcloud/nextcloudpi/raw/master/ncp-app/img/app.svg">
 
 
 # nextcloud
