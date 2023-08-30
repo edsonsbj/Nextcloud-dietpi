@@ -83,21 +83,32 @@ if [ "$DBPASS" != "$DBPASS2" ]; then
     exit 1
 fi
 
-# Log File
-LOGFILE="/var/log/install-nextcloud.log"
-
-# Nextcloud Folder
-NEXTCLOUD_CONF="/var/www/nextcloud"
-
 # Database
 HOSTNAME=localhost
 NC_DB=nextcloud_db
 NC_USER=nextcloud
 NC_PASSWORD="$DBPASS" # Change Here to a password of your choice
 
-# Administrator
-USER="$NCUSER"
-PASS="$NCPASS"
+# Log File
+LOGFILE="/var/log/install-nextcloud.log"
+
+# Prepare Flash USB
+sudo umount /dev/sda1
+sudo mkfs.ext4 /dev/sda1
+UUID=$(sudo blkid -s UUID -o value /dev/sda1)
+echo "UUID=$UUID /media/myCloudDrive ext4 defaults 0 0" | sudo tee -a /etc/fstab
+sudo mount -a
+sudo mkdir /media/myCloudDrive # Change this if you want to mount the drive elsewhere, like /mnt/, or change the name of the drive
+
+# Expand Swap Memory
+sudo swapoff -a
+sudo fallocate -l 8G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo swapon --show
+free -h
+
 
 # Redirect verbose to log file and display on screen
 exec > >(tee -i nextcloud-dietpi.log)
@@ -123,19 +134,13 @@ apt install redis-server php-redis -y
 
 # Configure PHP-FPM
 sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php/8.2/apache2/php.ini
+sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php/8.2/fpm/php.ini
 sed -i 's/;date.timezone.*/date.timezone = America\/\Sao_Paulo/' /etc/php/8.2/fpm/php.ini
 sed -i 's/upload_max_filesize = .*/upload_max_filesize = 10240M/' /etc/php/8.2/fpm/php.ini
 sed -i 's/post_max_size = .*/post_max_size = 10240M/' /etc/php/8.2/fpm/php.ini
-a2dismod php8.2 && sleep 2 && a2enmod proxy_fcgi setenvif && sleep 2 && a2enconf php8.2-fpm && sleep 2 && systemctl restart php8.2-fpm && sleep 2 && systemctl restart apache2
-
-# Configure MariaDB
-#mysql_secure_installation
+a2dismod php8.2 && sleep 2 && a2enmod proxy_fcgi setenvif && sleep 2 && a2enconf php8.2-fpm && sleep 2 && systemctl restart php8.2-fpm && sleep 2 && systemctl restart apache22dismod php8.2 && sleep 2 && a2enmod proxy_fcgi setenvif && sleep 2 && a2enconf php8.2-fpm && sleep 2 && systemctl restart php8.2-fpm && sleep 2 && systemctl restart apache2
 
 # Create the database for Nextcloud
-#mysql -e "CREATE DATABASE $NC_DB;"
-#mysql -e "CREATE USER '$NC_USER'@'localhost' IDENTIFIED BY '$NC_PASSWORD';"
-#mysql -e "GRANT ALL PRIVILEGES ON $NC_DB.* TO '$NC_USER'@'localhost';"
-#mysql -e "FLUSH PRIVILEGES;"ID
 mysql -e "CREATE DATABASE $NC_DB;"
 mysql -e "CREATE USER '$NC_USER'@'localhost' IDENTIFIED BY '$NC_PASSWORD';"
 mysql -e "GRANT ALL PRIVILEGES ON $NC_DB.* TO '$NC_USER'@'localhost';"
@@ -175,7 +180,7 @@ ServerName $NEXTCLOUD_IP
 EOF
 
 # Enable VirtualHost and restart Apache
-a2ensite nextcloud.conf && sleep 2 && systemctl reload apache2 && sleep 2 && systemctl status apache2 
+sudo a2dissite 000-default && sleep 2 && a2ensite nextcloud.conf && sleep 2 && systemctl reload apache2 && sleep 2 && systemctl status apache2
 
 # Run the Nextcloud installation script
 sudo -u www-data php /var/www/nextcloud/occ maintenance:install --database "mysql" --database-name "$NC_DB" --database-user "$NC_USER" --database-pass "$NC_PASSWORD" --admin-user $USER --admin-pass $PASS
@@ -295,13 +300,8 @@ chmod 600 /var/spool/cron/crontabs/root
 # Change data directory for external storage
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
-sudo umount /dev/sda1
-sudo mkfs.ext4 /dev/sda1
-UUID=$(sudo blkid -s UUID -o value /dev/sda1)
-sudo mount -a
 
-echo "UUID=$UUID /media/myCloudDrive ext4 defaults 0 0" | sudo tee -a /etc/fstab
-sudo mkdir /media/myCloudDrive		# Change this if you want to mount the drive elsewhere, like /mnt/, or change the name of the drive
+
 rsync -avh /var/www/nextcloud/data /media/myCloudDrive
 chown -R www-data:www-data /media/myCloudDrive/data
 chmod -R 770 /media/myCloudDrive/data
@@ -310,16 +310,7 @@ sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' =>
 
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 
-# If Using Swap
-
-sudo swapoff -a
-sudo fallocate -l 8G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-sudo swapon --show
-free -h
-
+# CLEAN Passwords from RAM Memory
 unset NCUSER
 unset NCPASS
 unset NCPASS2
