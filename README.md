@@ -1,4 +1,4 @@
-# <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="60" height="60"/> nextcloud
+<img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="60" height="60"/> # nextcloud
 Where some scripts used in Nextcloud can be found
 
 ## STEP 1: Flash Dietpi in a MicroSD CARD
