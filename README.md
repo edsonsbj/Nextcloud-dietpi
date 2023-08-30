@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="https://github.com/nextcloud/nextcloudpi/raw/master/ncp-app/img/app.svg" width="120" height="85"style="max-width: 100%;">
-  <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="120" height="40"style="max-width: 100%;">
+  <img src="https://github.com/nextcloud/nextcloudpi/raw/master/ncp-app/img/app.svg" width="240" height="170">
+  <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80">
 </p>
 
 # nextcloud
