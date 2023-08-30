@@ -230,42 +230,6 @@ EOF
 
 docker-compose up -d
 
-# Nextcloud Adjustments
-cp /var/www/nextcloud/config/config.php /var/www/nextcloud/config/config.php.bk
-sed -i '/);/d' /var/www/nextcloud/config/config.php.
-sed -i '/;/d' /var/www/nextcloud/config/config.php
-sudo cat <<EOF >>/var/www/nextcloud/config/config.php
-  'default_phone_region' => 'BE',
-  'memcache.distributed' => '\\OC\\Memcache\\Redis',
-  'memcache.local' => '\\OC\\Memcache\\Redis',
-  'memcache.locking' => '\\OC\\Memcache\\Redis',
-  'redis' => 
-  array (
-    'host' => 'localhost',
-    'port' => 6379,
-  ),
-  'enabledPreviewProviders' => 
-  array (
-    0 => 'OC\\Preview\\PNG',
-    1 => 'OC\\Preview\\JPEG',
-    2 => 'OC\\Preview\\GIF',
-    3 => 'OC\\Preview\\BMP',
-    4 => 'OC\\Preview\\XBitmap',
-    5 => 'OC\\Preview\\Movie',
-    6 => 'OC\\Preview\\PDF',
-    7 => 'OC\\Preview\\MP3',
-    8 => 'OC\\Preview\\TXT',
-    9 => 'OC\\Preview\\MarkDown',
-    10 => 'OC\\Preview\\Image',
-    11 => 'OC\\Preview\\HEIC',
-    12 => 'OC\\Preview\\TIFF',
-  ),
-  'trashbin_retention_obligation' => 'auto,30',
-  'versions_retention_obligation' => 'auto,30',
-);
-;
-
-EOF
 
 # Activate Cron
 
@@ -303,6 +267,44 @@ EOF
 
 chown root:crontab /var/spool/cron/crontabs/root
 chmod 600 /var/spool/cron/crontabs/root
+# Nextcloud Adjustments
+cp /var/www/nextcloud/config/config.php /var/www/nextcloud/config/config.php.bk
+sed -i '/);/d' /var/www/nextcloud/config/config.php.
+sed -i '/;/d' /var/www/nextcloud/config/config.php
+sudo cat <<EOF >>/var/www/nextcloud/config/config.php
+  'default_phone_region' => 'BE',
+  'memcache.distributed' => '\\OC\\Memcache\\Redis',
+  'memcache.local' => '\\OC\\Memcache\\Redis',
+  'memcache.locking' => '\\OC\\Memcache\\Redis',
+  'redis' => 
+  array (
+    'host' => 'localhost',
+    'port' => 6379,
+  ),
+  'enabledPreviewProviders' => 
+  array (
+    0 => 'OC\\Preview\\PNG',
+    1 => 'OC\\Preview\\JPEG',
+    2 => 'OC\\Preview\\GIF',
+    3 => 'OC\\Preview\\BMP',
+    4 => 'OC\\Preview\\XBitmap',
+    5 => 'OC\\Preview\\Movie',
+    6 => 'OC\\Preview\\PDF',
+    7 => 'OC\\Preview\\MP3',
+    8 => 'OC\\Preview\\TXT',
+    9 => 'OC\\Preview\\MarkDown',
+    10 => 'OC\\Preview\\Image',
+    11 => 'OC\\Preview\\HEIC',
+    12 => 'OC\\Preview\\TIFF',
+  ),
+  'trashbin_retention_obligation' => 'auto,30',
+  'versions_retention_obligation' => 'auto,30',
+);
+;
+
+EOF
+
+sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/nextcloud\/data',/" /var/www/nextcloud/config/config.php
 
 # Change data directory for external storage
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
@@ -310,8 +312,6 @@ sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 rsync -avh /var/www/nextcloud /media/myCloudDrive
 chown -R www-data:www-data /media/myCloudDrive/nextcloud
 chmod -R 770 /media/myCloudDrive/nextcloud
-
-sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/nextcloud\/data',/" /var/www/nextcloud/config/config.php
 
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 
