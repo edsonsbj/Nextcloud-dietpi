@@ -169,8 +169,8 @@ echo -e "\033[1;32mLines added to config.php.\033[0m"
 
 
 # Output TODO items with formatting
-echo -e "\n\n\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://192.168.0.71 to verify NextCloud configuration.\033[0m"
-echo -e "\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://192.168.0.71:81 to configure the NGINX PROXY MANAGER.\033[0m\n\n"
+echo -e "\n\n\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mChange the password of Nextclou Admin.\033[0m"
+sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 
 
 echo -e "\n\n\033[1;33m[\033[0m\033[1;32m OK \033[0;33m\033[1;33m]\033[0m \033[0mINSTALLATION COMPLETED!"
