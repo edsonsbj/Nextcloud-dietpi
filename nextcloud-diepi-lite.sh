@@ -8,6 +8,20 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+echo -e "\033[1;32mInstalling Nextcloud from DietPi Market.\033[0m"
+sudo dietpi-software install 114
+echo -e "\033[1;32mInstalling Docker from DietPi Market.\033[0m"
+sudo dietpi-software install 162
+echo -e "\033[1;32mInstalling Docker-Composer from DietPi Market.\033[0m"
+sudo dietpi-software install 134
+echo -e "\033[1;32mInstalling FFMPEG from DietPi Market.\033[0m"
+sudo dietpi-software install 7
+echo -e "\033[1;32mAll softwares needed from market were installed.\033[0m"
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # Create the nextcloud.conf file
@@ -31,7 +45,7 @@ cat <<EOF > $CONF_FILE
 </VirtualHost>
 EOF
 
-echo "Created $CONF_FILE with the specified content."
+echo -e "\033[1;32mCreated $CONF_FILE with the specified content.\033[0m"
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -60,19 +74,19 @@ sudo sed -i "s|'http://localhost/nextcloud|'http://localhost|g" /var/www/nextclo
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Execute maintenance:update:htaccess
 sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
-echo "Config.php updated and maintenance:update:htaccess executed."
+echo -e "\033[1;32mConfig.php updated and maintenance:update:htaccess executed.\033[0m"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # Install Nginx Proxy Manager
-echo "Preparing for NGINX PROXY MANAGER installation"
+echo -e "\033[1;32mPreparing for NGINX PROXY MANAGER installation\033[0m"
 cd /
 mkdir docker/ && cd docker/
 cd /docker/
 mkdir nginx && cd nginx
 touch docker-compose.yml
-echo "Creating docker-compose.yml..."
+echo -e "Creating docker-compose.yml..."
 cat <<EOF >>/docker/nginx/docker-compose.yml
 version: '3.8'
 services:
@@ -88,11 +102,11 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 
 EOF
-echo "Opening folder of docker-compose.yml"
+echo -e "Opening folder of docker-compose.yml"
 cd /docker/nginx
-echo "Installing NGINX PROXY MANAGER using Docker Compose"
+echo -e "Installing NGINX PROXY MANAGER using Docker Compose"
 docker compose up -d
-echo "NGINX PROXY MANAGER INSTALLED VIA DOCKER"
+echo -e "\033[1;32mNGINX PROXY MANAGER INSTALLED VIA DOCKER\033[0m"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -102,7 +116,7 @@ while true; do
     if [ "$user_input" == "CONTINUE" ]; then
         break
     else
-        echo "Invalid input. Please type 'CONTINUE' to proceed IF NGINX is configured."
+        echo -e "\033[1;31mInvalid input. Please type 'CONTINUE' to proceed IF NGINX is configured.\033[0m"
     fi
 done
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -135,5 +149,21 @@ sudo cat <<EOF >>/var/www/nextcloud/config/config.php
 );
 EOF
 
-echo "Lines added to config.php."
+echo -e "\033[1;32mLines added to config.php.\033[0m"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 10 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+# Output TODO items with formatting
+echo -e "\n\n\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://$NEXTCLOUD_IP to verify NextCloud configuration.\033[0m"
+echo -e "\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://$NEXTCLOUD_IP:81 to configure the NGINX PROXY MANAGER.\033[0m\n\n"
+
+
+echo -e "\n\n\033[1;33m[\033[0m\033[1;32m OK \033[0;33m\033[1;33m]\033[0m \033[0mINSTALLATION COMPLETED!"
+echo -e "\033[1;32m───────────────────────────────────────────────────────────────────────────────────────────────────────\033[0m"
+echo -e "\033[1;32mThank you for using this script!"
+echo -e "If you found it helpful, consider supporting the developer by buying a coffee using the link below:\033[0m"
+echo -e "\n\033[1;34m    \033[34mbuymeacoffee.com/lstavares84\033[0m"
+echo ""
+echo -e "\033[1;32mYour contribution helps maintain this project and enables the creation of more useful features in the future.\033[0m"
+echo -e "\033[1;32mThank you for your support!\033[0m"
+echo -e "\033[1;32m───────────────────────────────────────────────────────────────────────────────────────────────────────\033[0m"
