@@ -16,13 +16,13 @@ fi
 echo -e "\033[1;32mInstalling rsync from debian repository through 'apt install'.\033[0m"
 sudo apt install rsync
 echo -e "\033[1;32mInstalling Nextcloud from DietPi Market.\033[0m"
-dietpi-software install 114
+/boot/dietpi/dietpi-software install 114
 echo -e "\033[1;32mInstalling Docker from DietPi Market.\033[0m"
-dietpi-software install 162
+/boot/dietpi/dietpi-software install 162
 echo -e "\033[1;32mInstalling Docker-Composer from DietPi Market.\033[0m"
-dietpi-software install 134
+/boot/dietpi/dietpi-software install 134
 echo -e "\033[1;32mInstalling FFMPEG from DietPi Market.\033[0m"
-dietpi-software install 7
+/boot/dietpi/dietpi-software install 7
 echo -e "\033[1;32mAll softwares needed from market were installed.\033[0m"
 
 while true; do
