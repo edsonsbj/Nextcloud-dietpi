@@ -8,11 +8,13 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-NEXTCLOUD_IP = 192.168.0.71
-DOMAIN_NEXTCLOUD = thepandabay.duckdns.org
+#NEXTCLOUD_IP = '192.168.0.71'
+#DOMAIN_NEXTCLOUD = 'thepandabay.duckdns.org'
 
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+echo -e "\033[1;32mInstalling rsync from debian repository through 'apt install'.\033[0m"
+sudo apt install rsync
 echo -e "\033[1;32mInstalling Nextcloud from DietPi Market.\033[0m"
 dietpi-software install 114
 echo -e "\033[1;32mInstalling Docker from DietPi Market.\033[0m"
@@ -40,8 +42,8 @@ done
 # Create the nextcloud.conf file
 cat <<EOF > $CONF_FILE
 <VirtualHost *:80>
-    ServerName $NEXTCLOUD_IP
-    #ServerAlias $DOMAIN_NEXTCLOUD
+    ServerName 192.168.0.71
+    #ServerAlias thepandabay.duckdns.org
     #ServerAdmin webmaster@example.com
     DocumentRoot /var/www/nextcloud
 
@@ -157,7 +159,7 @@ sudo cat <<EOF >>/var/www/nextcloud/config/config.php
   ),
   'trashbin_retention_obligation' => 'auto,30',
   'versions_retention_obligation' => 'auto,30',
-  'overwritehost' => '$DOMAIN_NEXTCLOUD:8443',
+  'overwritehost' => '$thepandabay.duckdns.org:8443',
   'overwriteprotocol' => 'https',
 );
 EOF
@@ -167,8 +169,8 @@ echo -e "\033[1;32mLines added to config.php.\033[0m"
 
 
 # Output TODO items with formatting
-echo -e "\n\n\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://$NEXTCLOUD_IP to verify NextCloud configuration.\033[0m"
-echo -e "\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://$NEXTCLOUD_IP:81 to configure the NGINX PROXY MANAGER.\033[0m\n\n"
+echo -e "\n\n\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://192.168.0.71 to verify NextCloud configuration.\033[0m"
+echo -e "\033[1;30m[\033[0m\033[1;33m   \033[1;1mTODO   \033[0m\033[1;30m]\033[0m \033[0;37mAccess http://192.168.0.71:81 to configure the NGINX PROXY MANAGER.\033[0m\n\n"
 
 
 echo -e "\n\n\033[1;33m[\033[0m\033[1;32m OK \033[0;33m\033[1;33m]\033[0m \033[0mINSTALLATION COMPLETED!"
