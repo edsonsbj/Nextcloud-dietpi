@@ -96,14 +96,15 @@ echo "NGINX PROXY MANAGER INSTALLED VIA DOCKER"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# Prompt user to continue
-read -p "Please configure NGINX Proxy Manager now. Once done, type 'CONTINUE' to proceed with the script: " user_input
-
-# Check if user input is 'CONTINUE'
-if [ "$user_input" != "CONTINUE" ]; then
-    echo "Script will exit. Please configure NGINX Proxy Manager and run the script again."
-    exit 1
-fi
+# Prompt user to configure NGINX Proxy Manager
+while true; do
+    read -p "Please configure NGINX Proxy Manager now. Once done, type 'CONTINUE' to proceed with the script: " user_input
+    if [ "$user_input" == "CONTINUE" ]; then
+        break
+    else
+        echo "Invalid input. Please type 'CONTINUE' to proceed IF NGINX is configured."
+    fi
+done
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 10 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
