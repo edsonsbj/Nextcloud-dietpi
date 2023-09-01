@@ -86,7 +86,7 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 
 EOF
-
+cd /docker/nginx
 docker compose up -d
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
