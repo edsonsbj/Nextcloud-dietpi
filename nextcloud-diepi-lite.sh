@@ -66,11 +66,13 @@ echo "Config.php updated and maintenance:update:htaccess executed."
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # Install Nginx Proxy Manager
+echo "Preparing for NGINX PROXY MANAGER installation"
 cd /
 mkdir docker/ && cd docker/
 cd /docker/
 mkdir nginx && cd nginx
 touch docker-compose.yml
+echo "Creating docker-compose.yml..."
 cat <<EOF >>/docker/nginx/docker-compose.yml
 version: '3.8'
 services:
@@ -86,8 +88,11 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 
 EOF
+echo "Opening folder of docker-compose.yml"
 cd /docker/nginx
+echo "Installing NGINX PROXY MANAGER using Docker Compose"
 docker compose up -d
+echo "NGINX PROXY MANAGER INSTALLED VIA DOCKER"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
