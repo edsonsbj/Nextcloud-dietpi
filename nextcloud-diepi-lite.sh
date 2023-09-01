@@ -60,10 +60,10 @@ sudo sed -i "s|'http://localhost/nextcloud|'http://localhost|g" /var/www/nextclo
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Execute maintenance:update:htaccess
 sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
+echo "Config.php updated and maintenance:update:htaccess executed."
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-echo "Config.php updated and maintenance:update:htaccess executed."
 
 # Install Nginx Proxy Manager
 cd /
