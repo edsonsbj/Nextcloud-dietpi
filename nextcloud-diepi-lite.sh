@@ -14,14 +14,23 @@ DOMAIN_NEXTCLOUD = thepandabay.duckdns.org
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 echo -e "\033[1;32mInstalling Nextcloud from DietPi Market.\033[0m"
-sudo dietpi-software install 114
+dietpi-software install 114
 echo -e "\033[1;32mInstalling Docker from DietPi Market.\033[0m"
-sudo dietpi-software install 162
+dietpi-software install 162
 echo -e "\033[1;32mInstalling Docker-Composer from DietPi Market.\033[0m"
-sudo dietpi-software install 134
+dietpi-software install 134
 echo -e "\033[1;32mInstalling FFMPEG from DietPi Market.\033[0m"
-sudo dietpi-software install 7
+dietpi-software install 7
 echo -e "\033[1;32mAll softwares needed from market were installed.\033[0m"
+
+while true; do
+    read -p "Were all softwares well installed? Once done, type 'CONTINUE' to proceed with the script: " user_input
+    if [ "$user_input" == "CONTINUE" ]; then
+        break
+    else
+        echo -e "\033[1;31mInvalid input. Please type 'CONTINUE' to proceed IF NGINX is configured.\033[0m"
+    fi
+done
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
