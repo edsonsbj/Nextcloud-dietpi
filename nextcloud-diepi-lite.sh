@@ -8,6 +8,10 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+NEXTCLOUD_IP = 192.168.0.71
+DOMAIN_NEXTCLOUD = thepandabay.duckdns.org
+
+
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 echo -e "\033[1;32mInstalling Nextcloud from DietPi Market.\033[0m"
 sudo dietpi-software install 114
@@ -27,8 +31,8 @@ echo -e "\033[1;32mAll softwares needed from market were installed.\033[0m"
 # Create the nextcloud.conf file
 cat <<EOF > $CONF_FILE
 <VirtualHost *:80>
-    ServerName 192.168.0.70
-    #ServerAlias thepandacloud.duckdns.org
+    ServerName $NEXTCLOUD_IP
+    #ServerAlias $DOMAIN_NEXTCLOUD
     #ServerAdmin webmaster@example.com
     DocumentRoot /var/www/nextcloud
 
@@ -144,7 +148,7 @@ sudo cat <<EOF >>/var/www/nextcloud/config/config.php
   ),
   'trashbin_retention_obligation' => 'auto,30',
   'versions_retention_obligation' => 'auto,30',
-  'overwritehost' => 'www.iclouud.com.br:8443',
+  'overwritehost' => '$DOMAIN_NEXTCLOUD:8443',
   'overwriteprotocol' => 'https',
 );
 EOF
