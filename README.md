@@ -75,6 +75,12 @@ http://192.168.0.70:81/ (not https)
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/096888c5-b208-4ecd-8e4c-a7a8188d40dd)
 
 
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/9b81ed13-5f3d-4fda-af70-130aeaeacd97)
+
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/258e99b6-ad64-4497-83b6-f3f6fc3be694)
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/5b157be7-be27-4de6-8b56-f83483f39dbd)
+
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/a68a1144-6bc7-435b-9f20-df10a816cb0d)
 
 After Dietpi First Boot:
 
