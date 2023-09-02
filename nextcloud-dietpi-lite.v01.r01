@@ -22,6 +22,36 @@ echo -e "\033[1;32mInstalling FFMPEG from DietPi Market.\033[0m"
 /boot/dietpi/dietpi-software install 7
 echo -e "\033[1;32mAll softwares needed from market were installed.\033[0m"
 
+# Install Nginx Proxy Manager
+echo -e "\033[1;32mPreparing for NGINX PROXY MANAGER installation\033[0m"
+cd /
+mkdir docker/ && cd docker/
+cd /docker/
+mkdir nginx && cd nginx
+touch docker-compose.yml
+echo -e "Creating docker-compose.yml..."
+cat <<EOF >>/docker/nginx/docker-compose.yml
+version: '3.8'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '8880:80' # CHANGE THE PORT 8880 TO AN HTTP PORT OF YOUR CHOICE
+      - '81:81'
+      - '8443:443' # CHANGE THE PORT 8443 TO AN HTTPS PORT OF YOUR CHOICE
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+EOF
+echo -e "Opening folder of docker-compose.yml"
+cd /docker/nginx
+echo -e "Installing NGINX PROXY MANAGER using Docker Compose"
+docker compose up -d
+echo -e "\033[1;32mNGINX PROXY MANAGER INSTALLED VIA DOCKER\033[0m"
+
+
 while true; do
     read -p "Were all softwares well installed? Once done, type 'CONTINUE' to proceed with the script: " user_input
     if [ "$user_input" == "CONTINUE" ]; then
@@ -89,38 +119,6 @@ sudo sed -i "s|'http://localhost/nextcloud|'http://localhost|g" /var/www/nextclo
 sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
 echo -e "\033[1;32mConfig.php updated and maintenance:update:htaccess executed.\033[0m"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-# Install Nginx Proxy Manager
-echo -e "\033[1;32mPreparing for NGINX PROXY MANAGER installation\033[0m"
-cd /
-mkdir docker/ && cd docker/
-cd /docker/
-mkdir nginx && cd nginx
-touch docker-compose.yml
-echo -e "Creating docker-compose.yml..."
-cat <<EOF >>/docker/nginx/docker-compose.yml
-version: '3.8'
-services:
-  app:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    ports:
-      - '8880:80' # CHANGE THE PORT 8880 TO AN HTTP PORT OF YOUR CHOICE
-      - '81:81'
-      - '8443:443' # CHANGE THE PORT 8443 TO AN HTTPS PORT OF YOUR CHOICE
-    volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
-
-EOF
-echo -e "Opening folder of docker-compose.yml"
-cd /docker/nginx
-echo -e "Installing NGINX PROXY MANAGER using Docker Compose"
-docker compose up -d
-echo -e "\033[1;32mNGINX PROXY MANAGER INSTALLED VIA DOCKER\033[0m"
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 8 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Prompt user to configure NGINX Proxy Manager
