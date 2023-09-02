@@ -82,6 +82,10 @@ http://192.168.0.70:81/ (not https)
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/a68a1144-6bc7-435b-9f20-df10a816cb0d)
 
+
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/a3dbb35d-b84e-4a0c-81d9-f251ee84aad3)
+
+
 After Dietpi First Boot:
 
 cd / && wget https://raw.githubusercontent.com/lstavares84/nextcloud/master/nextcloud-dietpi.sh -O nextcloud-dietpi.sh && chmod +x nextcloud-dietpi.sh && ./nextcloud-dietpi.sh
