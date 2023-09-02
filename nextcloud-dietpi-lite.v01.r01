@@ -37,6 +37,7 @@ done
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # Create the nextcloud.conf file
+CONF_FILE="/etc/apache2/sites-available/nextcloud.conf"
 cat <<EOF > $CONF_FILE
 <VirtualHost *:80>
     ServerName 192.168.0.70
