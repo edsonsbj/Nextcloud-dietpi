@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# THIS SCRIPT WAS TESTED IN:
+#	[X] Raspberry Pi 4B+
+#	[X] Raspberry Pi 400
+#	[X] External HDD/SSD
+#	[ ] Flash USB (a.k.a Thumb Driver)
+#	[ ] NoIp Domain
+#	[ ] Cloudflare Domain
+#	[X] Duckdns Domain
+#	[ ] This script install OnlyOffice
+#	[X] This script DOES NOT install Onlyoffice
+#	[ ] This script formats the external HDD/SDD or Flash USB
+#	[X] This script DOES NOT formats the external HDD/SDD or Flash USB
+#	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
+#	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
+
 CONF_FILE="/etc/apache2/sites-available/nextcloud.conf"
 
 # Check if the script is executed by root
@@ -8,12 +23,10 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-#NEXTCLOUD_IP = '192.168.0.71'
-#DOMAIN_NEXTCLOUD = 'thepandabay.duckdns.org'
 
-
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STEP 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+echo -e "\033[1;32mInstalling rsync from debian repository through 'apt install'.\033[0m"
+sudo apt install rsync
 echo -e "\033[1;32mInstalling Nextcloud from DietPi Market.\033[0m"
 /boot/dietpi/dietpi-software install 114
 echo -e "\033[1;32mInstalling Docker from DietPi Market.\033[0m"
@@ -53,6 +66,7 @@ echo -e "Installing NGINX PROXY MANAGER using Docker Compose"
 docker compose up -d
 echo -e "\033[1;32mNGINX PROXY MANAGER INSTALLED VIA DOCKER\033[0m"
 
+
 while true; do
     read -p "Were all softwares well installed? Once done, type 'CONTINUE' to proceed with the script: " user_input
     if [ "$user_input" == "CONTINUE" ]; then
@@ -62,15 +76,17 @@ while true; do
     fi
 done
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END OF STEP 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STEP 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # Create the nextcloud.conf file
+CONF_FILE="/etc/apache2/sites-available/nextcloud.conf"
 cat <<EOF > $CONF_FILE
 <VirtualHost *:80>
-    ServerName 192.168.0.71
-    #ServerAlias thepandabay.duckdns.org
+    ServerName 192.168.0.70
+    #ServerAlias domain.duckdns.org
     #ServerAdmin webmaster@example.com
     DocumentRoot /var/www/nextcloud
 
@@ -87,35 +103,39 @@ cat <<EOF > $CONF_FILE
 </VirtualHost>
 EOF
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END OF STEP 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+echo -e "\033[1;32mCreated $CONF_FILE with the specified content.\033[0m"
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STEP 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-echo -e "\033[1;31mServers update.\033[0m"
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Enable the new configuration
 sudo a2ensite nextcloud.conf
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 4 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Disable other configurations
 sudo a2dissite 000-default.conf
 sudo a2dissite dietpi-nextcloud.conf
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 4 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 5 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Restart Apache
 sudo systemctl reload apache2
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 5 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END OF STEP 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STEP 4 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 6 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Edit config.php and make necessary changes
 sudo sed -i "/'htaccess.RewriteBase' => '\/nextcloud/d" /var/www/nextcloud/config/config.php
 sudo sed -i "s|'http://localhost/nextcloud|'http://localhost|g" /var/www/nextcloud/config/config.php
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 6 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Execute maintenance:update:htaccess
 sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
 echo -e "\033[1;32mConfig.php updated and maintenance:update:htaccess executed.\033[0m"
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END OF STEP 4 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STEP 5 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Prompt user to configure NGINX Proxy Manager
 while true; do
     read -p "Please configure NGINX Proxy Manager now. Once done, type 'CONTINUE' to proceed with the script: " user_input
@@ -125,12 +145,35 @@ while true; do
         echo -e "\033[1;31mInvalid input. Please type 'CONTINUE' to proceed IF NGINX is configured.\033[0m"
     fi
 done
-
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> END OF STEP 5 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 10 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Append the required lines to config.php
-
+sudo cat <<EOF >>/var/www/nextcloud/config/config.php
+  'default_phone_region' => 'BE',
+  'enable_previews' => true,
+  'enabledPreviewProviders' =>
+  array (
+    0 => 'OC\\Preview\\PNG',
+    1 => 'OC\\Preview\\JPEG',
+    2 => 'OC\\Preview\\GIF',
+    3 => 'OC\\Preview\\BMP',
+    4 => 'OC\\Preview\\XBitmap',
+    5 => 'OC\\Preview\\Movie',
+    6 => 'OC\\Preview\\PDF',
+    7 => 'OC\\Preview\\MP3',
+    8 => 'OC\\Preview\\TXT',
+    9 => 'OC\\Preview\\MarkDown',
+    10 => 'OC\\Preview\\Image',
+    11 => 'OC\\Preview\\HEIC',
+    12 => 'OC\\Preview\\TIFF',
+  ),
+  'trashbin_retention_obligation' => 'auto,30',
+  'versions_retention_obligation' => 'auto,30',
+  'overwritehost' => '$thepandabay.duckdns.org:8443',
+  'overwriteprotocol' => 'https',
+);
+EOF
 
 echo -e "\033[1;32mLines added to config.php.\033[0m"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 10 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
