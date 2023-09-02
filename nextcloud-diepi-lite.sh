@@ -138,31 +138,7 @@ done
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 10 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Append the required lines to config.php
-sudo cat <<EOF >>/var/www/nextcloud/config/config.php
-  'default_phone_region' => 'BE',
-  'enable_previews' => true,
-  'enabledPreviewProviders' =>
-  array (
-    0 => 'OC\\Preview\\PNG',
-    1 => 'OC\\Preview\\JPEG',
-    2 => 'OC\\Preview\\GIF',
-    3 => 'OC\\Preview\\BMP',
-    4 => 'OC\\Preview\\XBitmap',
-    5 => 'OC\\Preview\\Movie',
-    6 => 'OC\\Preview\\PDF',
-    7 => 'OC\\Preview\\MP3',
-    8 => 'OC\\Preview\\TXT',
-    9 => 'OC\\Preview\\MarkDown',
-    10 => 'OC\\Preview\\Image',
-    11 => 'OC\\Preview\\HEIC',
-    12 => 'OC\\Preview\\TIFF',
-  ),
-  'trashbin_retention_obligation' => 'auto,30',
-  'versions_retention_obligation' => 'auto,30',
-  'overwritehost' => '$thepandabay.duckdns.org:8443',
-  'overwriteprotocol' => 'https',
-);
-EOF
+
 
 echo -e "\033[1;32mLines added to config.php.\033[0m"
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 10 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
