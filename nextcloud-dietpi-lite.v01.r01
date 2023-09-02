@@ -8,9 +8,6 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-#NEXTCLOUD_IP = '192.168.0.71'
-#DOMAIN_NEXTCLOUD = 'thepandabay.duckdns.org'
-
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 echo -e "\033[1;32mInstalling rsync from debian repository through 'apt install'.\033[0m"
@@ -42,8 +39,8 @@ done
 # Create the nextcloud.conf file
 cat <<EOF > $CONF_FILE
 <VirtualHost *:80>
-    ServerName 192.168.0.71
-    #ServerAlias thepandabay.duckdns.org
+    ServerName 192.168.0.70
+    #ServerAlias domain.duckdns.org
     #ServerAdmin webmaster@example.com
     DocumentRoot /var/www/nextcloud
 
