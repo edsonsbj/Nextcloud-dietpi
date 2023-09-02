@@ -314,6 +314,7 @@ chmod -R 770 /media/myCloudDrive/data
 UUID=$(sudo blkid -s UUID -o value /dev/sda1)
 echo "UUID=$UUID /media/myCloudDrive btrfs defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
+sudo systemctl daemon-reload
 
 sed -i "s/'datadirectory' => '\/var\/www\/nextcloud\/data',.*/'datadirectory' => '\/media\/myCloudDrive\/nextcloud\/data',/" /var/www/nextcloud/config/config.php
 
