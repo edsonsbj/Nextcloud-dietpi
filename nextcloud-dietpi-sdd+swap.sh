@@ -9,9 +9,9 @@ echo "UUID=$UUID /media/myCloudDrive btrfs defaults 0 0" | sudo tee -a /etc/fsta
 sudo mount -a
 sudo systemctl daemon-reload
 
-rsync -avh /var/www/nextcloud/data /media/myCloudDrive
-chown -R www-data:www-data /media/myCloudDrive/data
-chmod -R 770 /media/myCloudDrive/data
+rsync -avh /mnt/dietpi_userdata/nextcloud_data /media/myCloudDrive
+chown -R www-data:www-data /media/myCloudDrive/nextcloud_data
+chmod -R 770 /media/myCloudDrive/nextcloud_data
 
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 
