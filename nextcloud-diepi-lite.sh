@@ -15,8 +15,6 @@
 #	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
 #	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
 
-CONF_FILE="/etc/apache2/sites-available/nextcloud.conf"
-
 # Check if the script is executed by root
 if [ "$(id -u)" != "0" ]; then
     echo "This script must be executed as root!"
