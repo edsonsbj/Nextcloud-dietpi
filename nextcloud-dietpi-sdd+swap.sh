@@ -4,7 +4,8 @@ sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 sudo apt install btrfs-progs -y
 sudo umount /dev/sda1
 sudo mkfs.btrfs -f /dev/sda1
-sudo mkdir /media/myCloudDrive          # Change this if you want to mount the drive elsewhere, like /mnt/, or chang>UUID=$(sudo blkid -s UUID -o value /dev/sda1)
+sudo mkdir /media/myCloudDrive          # Change this if you want to mount the drive elsewhere, like /mnt/, or change
+UUID=$(sudo blkid -s UUID -o value /dev/sda1)
 echo "UUID=$UUID /media/myCloudDrive btrfs defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
 sudo systemctl daemon-reload
