@@ -66,9 +66,13 @@ http://192.168.0.70:81/ (not https)
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/4ef1739e-89b7-41e9-bc72-b471a725983f)
 
-![Uploading image.png…]()
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/06c33414-6b79-4076-a349-2c853604aac5)
 
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/42b227f9-18fc-4350-a9d9-0d1e1977144a)
 
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/77793b3e-0bdc-4c42-9053-43c25191d9e0)
+
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/096888c5-b208-4ecd-8e4c-a7a8188d40dd)
 
 
 
