@@ -16,6 +16,7 @@ chmod -R 770 /media/myCloudDrive/nextcloud_data
 
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 
+sudo systemctl restart redis-server
 sudo systemctl restart apache2
 
 # If Using Swap
