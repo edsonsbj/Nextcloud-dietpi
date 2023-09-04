@@ -10,7 +10,7 @@ $CONFIG = array (
     ),
   'overwritehost' => 'domain.duckdns.org:8443',
   'overwriteprotocol' => 'https',
-  'datadirectory' => '/mnt/dietpi_userdata/nextcloud_data',
+  'datadirectory' => '/media/myCloudDrive/nextcloud_data',
   'dbtype' => 'mysql',
   'version' => '27.0.2.1',
   'hashingThreads' => 4,
