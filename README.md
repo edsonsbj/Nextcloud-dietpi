@@ -1,6 +1,6 @@
 <p align="center">
-   <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/Nextcloud_Hub_background.svg" width="120" height="85"> <img src="https://github.com/devicons/devicon/blob/master/icons/raspberrypi/raspberrypi-original.svg" width="85" height="85"> 
-   <img width="160" height="160" src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" class="attachment-full size-full" alt="Nextcloud logo" decoding="async" data-lazy-src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" /><noscript><img width="160" height="160" src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" class="attachment-full size-full" alt="Nextcloud logo" decoding="async" /></noscript>
+   <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85"> <img src="https://github.com/devicons/devicon/blob/master/icons/raspberrypi/raspberrypi-original.svg" width="85" height="85"> 
+
 </p>
 
 # nextcloud
