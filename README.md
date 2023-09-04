@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="https://github.com/devicons/devicon/blob/master/icons/raspberrypi/raspberrypi-original.svg" width="85" height="85"> <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://github.com/nextcloud/nextcloudpi/raw/master/ncp-app/img/app.svg" width="120" height="85"> 
+   <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85"> <img src="https://github.com/devicons/devicon/blob/master/icons/raspberrypi/raspberrypi-original.svg" width="85" height="85"> 
 </p>
 
 # nextcloud
