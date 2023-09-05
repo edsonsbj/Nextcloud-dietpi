@@ -9,6 +9,23 @@ Where some scripts used in Nextcloud can be found
 
 ## STEP 1: Flash Dietpi in a MicroSD CARD
 
+
+# THIS SCRIPT WAS TESTED IN:
+#	[X] Raspberry Pi 4B+
+#	[X] Raspberry Pi 400
+#	[X] External HDD/SSD
+#	[ ] Flash USB (a.k.a Thumb Driver)
+#	[ ] NoIp Domain
+#	[ ] Cloudflare Domain
+#	[X] Duckdns Domain
+#	[ ] This script install OnlyOffice
+#	[X] This script DOES NOT install Onlyoffice
+#	[ ] This script formats the external HDD/SDD or Flash USB
+#	[X] This script DOES NOT formats the external HDD/SDD or Flash USB
+#	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
+#	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
+
+
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/93afa86e-04e2-4ce7-9a22-0afddcfd0e37)
 
 ## STEP 2: Boot Raspberry Pi with Diet Pi flashed in MicroSD
