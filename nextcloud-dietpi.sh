@@ -142,6 +142,21 @@ done
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 10 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+while true; do
+    read -p "Do you want to install an External HDD/SSD as Data Storage? (Y/N): " user_input
+    if [ "$user_input" == "Y" ]; then
+        read -p "Please plug in the External HDD/SSD into USB 3.0. All data on the drive will be lost as it will be formatted. Continue? (Y/N): " format_input
+        if [ "$format_input" == "Y" ]; then
+            # Execute the script for external storage (assuming it's in the root directory)
+            sudo /nextcloud-dietpi-external-storage.sh
+        fi
+        break
+    elif [ "$user_input" == "N" ]; then
+        break
+    else
+        echo -e "\033[1;31mInvalid input. Please type 'Y' for Yes or 'N' for No.\033[0m"
+    fi
+done
 
 while true; do
     read -p "Access /var/www/nextcloud/config/config.php to edit domain and IP in another SSH Terminal Screen. After that, type 'CONTINUE' to proceed with the script: " user_input
