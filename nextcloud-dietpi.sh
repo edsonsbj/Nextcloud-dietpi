@@ -1,20 +1,5 @@
 #!/bin/bash
 
-# THIS SCRIPT WAS TESTED IN:
-#	[X] Raspberry Pi 4B+
-#	[X] Raspberry Pi 400
-#	[X] External HDD/SSD
-#	[ ] Flash USB (a.k.a Thumb Driver)
-#	[ ] NoIp Domain
-#	[ ] Cloudflare Domain
-#	[X] Duckdns Domain
-#	[ ] This script install OnlyOffice
-#	[X] This script DOES NOT install Onlyoffice
-#	[ ] This script formats the external HDD/SDD or Flash USB
-#	[X] This script DOES NOT formats the external HDD/SDD or Flash USB
-#	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
-#	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
-
 # Check if the script is executed by root
 if [ "$(id -u)" != "0" ]; then
     echo "This script must be executed as root!"
@@ -146,7 +131,7 @@ echo -e "\033[1;32mConfig.php updated and maintenance:update:htaccess executed.\
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Prompt user to configure NGINX Proxy Manager
 while true; do
-    read -p "Please configure NGINX Proxy Manager now. Once done, type 'CONTINUE' to proceed with the script: " user_input
+    read -p "Please configure NGINX Proxy Manager now (E-mail Adsress: admin@example.com | Password: changeme) . Once done, type 'CONTINUE' to proceed with the script: " user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
     else
