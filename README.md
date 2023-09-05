@@ -42,7 +42,7 @@ Where some scripts used in Nextcloud can be found
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/2c0a3b3a-e0cd-49ad-a9e4-dc46c8439264)
 
 
-cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x /nextcloud-dietpi.sh && sudo chmod +x nextcloud-dietpi-external-storage.sh && sudo ./nextcloud-dietpi.sh && sudo /nextcloud-dietpi-external-storage.sh
+cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x /nextcloud-dietpi.sh && sudo chmod +x nextcloud-dietpi-external-storage.sh && sudo ./nextcloud-dietpi.sh
 
 
 
