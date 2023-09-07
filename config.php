@@ -28,6 +28,7 @@ $CONFIG = array (
   'dbpassword' => 'DEFINED DURING INSTALLATION',
   'installed' => true,
   'instanceid' => 'DEFINED DURING INSTALLATION ',
+  'maintenance' => false,
   array (
     'host' => 'localhost',
     'port' => 6379,
@@ -50,5 +51,5 @@ $CONFIG = array (
   ),
   'trashbin_retention_obligation' => 'auto,30',
   'versions_retention_obligation' => 'auto,30',
-  'maintenance' => false,
+
 );
