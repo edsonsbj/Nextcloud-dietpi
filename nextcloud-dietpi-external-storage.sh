@@ -3,7 +3,7 @@ sudo lsblk
 
 # Prompt the user to select the correct folder
 while true; do
-    read -p "Where the main volume? Please enter 'a' or 'b': " drive_option
+    read -p "Where the main volume? Please enter (a) 'sda1' or (b) 'sdb1': " drive_option
     case $drive_option in
         [aA])
             drive="/dev/sda1"
