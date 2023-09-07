@@ -13,11 +13,9 @@ sudo systemctl daemon-reload
 rsync -avh /mnt/dietpi_userdata/nextcloud_data /media/myCloudDrive
 chown -R www-data:www-data /media/myCloudDrive/nextcloud_data
 chmod -R 770 /media/myCloudDrive/nextcloud_data
-
-sudo -u www-data /usr/bin/php /var/www/nextcloud/occ files:scan-app-data #To “reset” the preview cache
-
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 
+#sudo -u www-data /usr/bin/php /var/www/nextcloud/occ files:scan-app-data #To “reset” the preview cache
 sudo systemctl restart redis-server
 sudo systemctl restart apache2
 
