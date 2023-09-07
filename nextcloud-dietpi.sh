@@ -1,10 +1,18 @@
 #!/bin/bash
 
-# Check if the script is executed by root
-if [ "$(id -u)" != "0" ]; then
-    echo "This script must be executed as root!"
+# Check if the user is in the Linux root directory
+if [ "$PWD" != "/" ]; then
+    echo "This script must be executed in the root directory of the system."
     exit 1
 fi
+echo "Changing to the root directory..."
+cd /
+echo "pwd is $(pwd)"
+echo "location of the database backup file is " '/'
+
+# Redirect verbose to log file and display on screen
+exec > >(tee -i nextcloud-dietpi.log)
+exec 2>&1
 
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
