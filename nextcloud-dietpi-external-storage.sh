@@ -1,11 +1,31 @@
 # Change data directory for external storage
+sudo lsblk
+
+# Prompt the user to select the correct folder
+while true; do
+    read -p "Where the main volume? Please enter 'a' or 'b': " drive_option
+    case $drive_option in
+        [aA])
+            drive="/dev/sda1"
+            break
+            ;;
+        [bB])
+            drive="/dev/sdb1"
+            break
+            ;;
+        *)
+            echo "Invalid input. Please enter 'a' or 'b'."
+            ;;
+    esac
+done
+
 sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
 sudo apt install btrfs-progs -y
-sudo umount /dev/sda1
-sudo mkfs.btrfs -f /dev/sda1
+sudo umount "$drive"
+sudo mkfs.btrfs -f "$drive"
 sudo mkdir /media/myCloudDrive          # Change this if you want to mount the drive elsewhere, like /mnt/, or change
-UUID=$(sudo blkid -s UUID -o value /dev/sda1)
+UUID=$(sudo blkid -s UUID -o value "$drive")
 echo "UUID=$UUID /media/myCloudDrive btrfs defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
 sudo systemctl daemon-reload
