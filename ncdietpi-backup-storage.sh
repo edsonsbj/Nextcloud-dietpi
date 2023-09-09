@@ -34,6 +34,7 @@ sudo mkdir /media/myCloudBackup
 UUID=$(sudo blkid -s UUID -o value "$drive")
 echo "UUID=$UUID /media/myCloudBackup btrfs defaults 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
-sudo systemctl daemon-reload
 
-rsync -avh /mnt/dietpi_userdata/nextcloud_data /media/myCloudDrive
+sudo systemctl daemon-reload
+sudo systemctl restart redis-server
+sudo systemctl restart apache2
