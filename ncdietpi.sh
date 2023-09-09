@@ -14,6 +14,18 @@ echo "location of the database backup file is " '/'
 exec > >(tee -i nextcloud-dietpi.log)
 exec 2>&1
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 0 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# Get the IP address of the Nextcloud device from the user
+read -p "Please enter the IP address of the device where Nextcloud will be installed: " NEXTCLOUD_IP
+read -p "Please enter the IP address again for verification: " NEXTCLOUD_IP_VERIFY
+
+# Verify that the IP addresses match
+if [ "$NEXTCLOUD_IP" != "$NEXTCLOUD_IP_VERIFY" ]; then
+    echo "IP addresses do not match. Please try again."
+    exit 1
+fi
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 0 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 echo -e "\033[1;32mInstalling rsync from debian repository through 'apt install'.\033[0m"
