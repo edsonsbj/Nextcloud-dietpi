@@ -90,7 +90,7 @@ done
 CONF_FILE="/etc/apache2/sites-available/nextcloud.conf"
 cat <<EOF > $CONF_FILE
 <VirtualHost *:80>
-    ServerName "$NEXTCLOUD_IP"
+    ServerName $NEXTCLOUD_IP
     #ServerAlias domain.duckdns.org
     #ServerAdmin webmaster@example.com
     DocumentRoot /var/www/nextcloud
