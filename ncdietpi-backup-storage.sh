@@ -92,3 +92,12 @@ sudo mkfs.btrfs -f "$drive"
 sudo mkdir /media/myCloudBackup
 
 echo "Drive $drive has been formatted and is ready for use."
+
+
+echo -e "\033[1;32mInstalling RCLONE from DietPi Market.\033[0m"
+/boot/dietpi/dietpi-software install 202
+echo -e "\033[1;32mInstalling GIT from DietPi Market.\033[0m"
+/boot/dietpi/dietpi-software install 17
+echo -e "\033[1;32mAll softwares needed from market were installed.\033[0m"
+
+sudo apt install borgbackup -y
