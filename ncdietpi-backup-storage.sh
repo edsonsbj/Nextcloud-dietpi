@@ -36,5 +36,3 @@ echo "UUID=$UUID /media/myCloudBackup btrfs defaults 0 0" | sudo tee -a /etc/fst
 sudo mount -a
 
 sudo systemctl daemon-reload
-sudo systemctl restart redis-server
-sudo systemctl restart apache2
