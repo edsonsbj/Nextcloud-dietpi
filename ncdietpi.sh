@@ -15,13 +15,15 @@ exec > >(tee -i nextcloud-dietpi.log)
 exec 2>&1
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 0 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# Get the IP address of the Nextcloud device from the user
-read -p "Please enter the IP address of the device where Nextcloud will be installed: " NEXTCLOUD_IP
-read -p "Please enter the IP address again for verification: " NEXTCLOUD_IP_VERIFY
 
-# Verify that the IP addresses match
-if [ "$NEXTCLOUD_IP" != "$NEXTCLOUD_IP_VERIFY" ]; then
-    echo "IP addresses do not match. Please try again."
+# Get the local IP address of the device
+NEXTCLOUD_IP=$(hostname -I | awk '{print $1}')
+
+# Prompt the user to confirm and use the local IP address
+read -p "Your local IP address is $NEXTCLOUD_IP. Is this correct? (Y/N): " confirm
+
+if [[ "$confirm" != "Y" && "$confirm" != "y" ]]; then
+    echo "Please configure your local IP address correctly and re-run the script."
     exit 1
 fi
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 0 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -88,7 +90,7 @@ done
 CONF_FILE="/etc/apache2/sites-available/nextcloud.conf"
 cat <<EOF > $CONF_FILE
 <VirtualHost *:80>
-    ServerName 192.168.0.70
+    ServerName $NEXTCLOUD_IP
     #ServerAlias domain.duckdns.org
     #ServerAdmin webmaster@example.com
     DocumentRoot /var/www/nextcloud
