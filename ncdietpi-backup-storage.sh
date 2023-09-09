@@ -31,8 +31,3 @@ sudo apt install btrfs-progs -y
 sudo umount "$drive"
 sudo mkfs.btrfs -f "$drive"
 sudo mkdir /media/myCloudBackup
-UUID=$(sudo blkid -s UUID -o value "$drive")
-echo "UUID=$UUID /media/myCloudBackup btrfs defaults 0 0" | sudo tee -a /etc/fstab
-sudo mount -a
-
-sudo systemctl daemon-reload
