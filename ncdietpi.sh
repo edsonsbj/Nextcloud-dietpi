@@ -40,6 +40,9 @@ RESET_COLOR='\033[0m'  # Restaura as configurações de cores para o padrão.
 
 
 ###################### STEP 0 ######################
+
+start_time=$(date +%s)
+
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
     echo "[ ${BOLD_RED}!${RESET_COLOR} ] This script must be executed in the root directory of the system."
@@ -278,8 +281,17 @@ echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud A
 sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 ################## END OF STEP 7 ###################
 
+end_time=$(date +%s)
+# Calcule a diferença de tempo
+execution_time=$((end_time - start_time))
 
-echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
+# Converta o tempo para um formato legível
+hours=$((execution_time / 3600))
+minutes=$((execution_time % 3600 / 60))
+seconds=$((execution_time % 60))
+
+
+echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED in ${hours}h ${minutes}m ${seconds}s!${RESET_COLOR}"
 echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
 echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
 echo -e "Thank you for using this script!"
