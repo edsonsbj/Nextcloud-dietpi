@@ -149,19 +149,19 @@ cat <<EOF > $CONF_FILE
 EOF
 
 echo -e "\033[1;32mCreated $CONF_FILE with the specified content.\033[0m"
-cat $CONF_FILE
 
-while true; do
-   echo -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Is the LOCAL IP address in $CONF_FILE correct for your Nextcloud? (Y/N): "
-   read user_input
-    if [ "$user_input" == "Y" ] || [ "$user_input" == "y" ]; then
-        break
-    elif [ "$user_input" == "N" ] || [ "$user_input" == "n" ]; then
-        nano $CONF_FILE
-    else
-        echo -e "Invalid input. Please enter 'Y' or 'N'."
-    fi
-done
+#cat $CONF_FILE
+#while true; do
+#   echo -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Is the LOCAL IP address in $CONF_FILE correct for your Nextcloud? (Y/N): "
+#   read user_input
+#    if [ "$user_input" == "Y" ] || [ "$user_input" == "y" ]; then
+#        break
+#    elif [ "$user_input" == "N" ] || [ "$user_input" == "n" ]; then
+#        nano $CONF_FILE
+#    else
+#        echo -e "Invalid input. Please enter 'Y' or 'N'."
+#    fi
+#done
 
 ################## END OF STEP 2 ###################
 
