@@ -210,6 +210,8 @@ if [ ! -f "$config_file" ]; then
     exit 1
 fi
 
+cp "$config_file" "$config_file.bak"
+
 # Add the IP into config.php
 sed -i "/'trusted_domains' =>/a \ \ \ \ 1 => '$NEXTCLOUD_IP'," "$config_file"
 
@@ -279,10 +281,10 @@ sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 
 echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
 echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
-echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
+echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
 echo -e "Thank you for using this script!"
 echo -e "If you found it helpful, consider supporting the developer by buying a coffee using the link below:"
 echo -e "\n                        ${LIGHT_GREEN}buymeacoffee.com/lstavares84${RESET_COLOR}"
 echo -e "\nYour contribution helps maintain this project and enables the creation of more useful features in the future."
 echo -e "Thank you for your support!"
-echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
+echo -e "${LIGHT_GREEN}──────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
