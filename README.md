@@ -25,7 +25,7 @@ Where some scripts used in Nextcloud can be found
 	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
 	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
 
-cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x *.sh && sudo ./ncdietpi.sh
+cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x /nextcloud-dietpi.sh && sudo chmod +x nextcloud-dietpi-external-storage.sh && sudo ./nextcloud-dietpi.sh
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/93afa86e-04e2-4ce7-9a22-0afddcfd0e37)
 
