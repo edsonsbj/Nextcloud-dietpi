@@ -25,6 +25,7 @@ cd / && sudo apt install git -y && git clone https://github.com/lstavares84/next
 #	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
 #	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
 
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/df0d7815-67f3-41f1-b35a-ab32307c683f)
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/93afa86e-04e2-4ce7-9a22-0afddcfd0e37)
 
