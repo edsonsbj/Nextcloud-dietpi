@@ -80,6 +80,10 @@ echo -e "${LIGHT_GREEN}Installing Docker-Composer from DietPi Market.${RESET_COL
 /boot/dietpi/dietpi-software install 134
 echo -e "${LIGHT_GREEN}Installing FFMPEG from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 7
+echo -e "${LIGHT_GREEN}Installing PHP-BCMATCH, PHP-GMP e PMP-IMAGICK from debian repository.${RESET_COLOR}"
+sudo apt install imagemagick php8.2-{bcmath,gmp,imagick} -y
+
+
 
 
 # Install Nginx Proxy Manager
