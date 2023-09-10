@@ -200,7 +200,7 @@ done
 ###################### STEP 6 ######################
 
 while true; do
-    echo -e "Access /var/www/nextcloud/config/config.php to edit domain and IP in another SSH Terminal Screen. After that, type 'CONTINUE' to proceed with the script: "
+    echo -e "Edit ${YELLOW}/var/www/nextcloud/config/config.php${RESET_COLOR} in another SSH Terminal Screen. After that, type 'CONTINUE' to proceed with the script: "
     read user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
@@ -213,7 +213,7 @@ done
 
 ###################### STEP 7 ######################
 # Output TODO items with formatting
-echo -e "\n\n\[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
+echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
 sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 ################## END OF STEP 7 ###################
 
