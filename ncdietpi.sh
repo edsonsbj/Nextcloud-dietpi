@@ -199,8 +199,63 @@ done
 
 ###################### STEP 6 ######################
 
+# Check if config.php was created before
+config_file='/var/www/nextcloud/config/config.php'
+if [ ! -f "$config_file" ]; then
+    echo -e " [ ${BOLD_RED}!${RESET_COLOR} ] File config.php not found ${YELLOW}$config_file{RESET_COLOR}."
+    exit 1
+fi
+
+# Add the IP into config.php
+sed -i "/'trusted_domains' =>/a \ \ \ \ 1 => '$NEXTCLOUD_IP'," "$config_file"
+
+# Change 'overwritehost' e 'overwriteprotocol' with domain
+
+# User informs domains
 while true; do
-    echo -e "Edit ${YELLOW}/var/www/nextcloud/config/config.php${RESET_COLOR} in another SSH Terminal Screen. After that, type 'CONTINUE' to proceed with the script: "
+    echo -e -n "Please enter the domain (without 'http', 'https', 'www', or 'http://') for 'overwritehost' (e.g., example.com): "
+    read new_domain
+    # Remove blank/empty spaces
+    new_domain=$(echo "$new_domain" | tr -d '[:space:]')
+
+    # Verify domain
+    if [[ ! "$new_domain" =~ ^[a-zA-Z0-9.-]+$ || "$new_domain" == *":"* ]]; then
+        echo  -e " [ ${BOLD_RED}!${RESET_COLOR} ] Invalid domain format or contains ':' symbol at the end. Please try again."
+    else
+        break
+    fi
+done
+
+while true; do
+    read -p "Please confirm the domain you entered is '$new_domain'. Is this correct? (Y/N): " confirm
+    case $confirm in
+        [yY])
+            # Edite ou adicione a linha 'overwritehost'
+            sed -i "s/'overwritehost' =>.*/'overwritehost' => '$new_domain:8443',/" "$config_file"
+            break
+            ;;
+        [nN])
+            echo "Please try again."
+            exit 1
+            ;;
+        *)
+            echo "Invalid input. Please enter 'Y' or 'N'."
+            ;;
+    esac
+done
+
+
+sed -i "s/'datadirectory' =>.*/'datadirectory' => '/media/myCloudDrive/nextcloud_data',/" "$config_file"
+sed -i "/'instanceid' =>/a \ \ \ \ 'maintenance' => false," "$config_file"
+sed -i "/'maintenance' => false,/a \ \ \ \ array (\n \ \ \ \ \ \ 'host' => 'localhost',\n \ \ \ \ \ \ 'port' => 6379,\n \ \ \ \ )," "$config_file"
+sed -i "/array (\n \ \ \ \ \ \ 'host' => 'localhost',\n \ \ \ \ \ \ 'port' => 6379,\n \ \ \ \ ),/a \ \ \ \ 'enabledPreviewProviders' =>\n \ \ \ \ array (\n \ \ \ \ \ \ 0 => 'OC\\Preview\\PNG',\n \ \ \ \ \ \ 1 => 'OC\\Preview\\JPEG',\n \ \ \ \ \ \ 2 => 'OC\\Preview\\GIF',\n \ \ \ \ \ \ 3 => 'OC\\Preview\\BMP',\n \ \ \ \ \ \ 4 => 'OC\\Preview\\XBitmap',\n \ \ \ \ \ \ 5 => 'OC\\Preview\\Movie',\n \ \ \ \ \ \ 6 => 'OC\\Preview\\PDF',\n \ \ \ \ \ \ 7 => 'OC\\Preview\\MP3',\n \ \ \ \ \ \ 8 => 'OC\\Preview\\TXT',\n \ \ \ \ \ \ 9 => 'OC\\Preview\\MarkDown',\n \ \ \ \ \ \ 10 => 'OC\\Preview\\Image',\n \ \ \ \ \ \ 11 => 'OC\\Preview\\HEIC',\n \ \ \ \ \ \ 12 => 'OC\\Preview\\TIFF',\n \ \ \ \ )," "$config_file"
+sed -i "/'enabledPreviewProviders' =>/a \ \ \ \ 'trashbin_retention_obligation' => 'auto,30'," "$config_file"
+sed -i "/'trashbin_retention_obligation' =>/a \ \ \ \ 'versions_retention_obligation' => 'auto,30'," "$config_file"
+
+
+
+while true; do
+    echo -e "Edit ${YELLOW}$config_file{RESET_COLOR} has been changed. In another SSH Terminal Screen check if everything is okay and after that, type 'CONTINUE' to proceed with the script: "
     read user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
