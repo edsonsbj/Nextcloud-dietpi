@@ -57,7 +57,7 @@ exec 2>&1
 NEXTCLOUD_IP=$(hostname -I | awk '{print $1}')
 
 # Prompt the user to confirm and use the local IP address
-echo -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Your local IP address is ${YELLOW}$NEXTCLOUD_IP${RESET_COLOR}. Is this correct? (Y/N): "
+echo -e -n "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Your local IP address is ${YELLOW}$NEXTCLOUD_IP${RESET_COLOR}. Is this correct? (Y/N): "
 read confirm
 
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]]; then
