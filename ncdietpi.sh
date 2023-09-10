@@ -32,6 +32,7 @@ LIGHT_GREEN='\033[0;92m'  # Light Green
 ORANGE='\033[0;33m'       # Orange
 PURPLE='\033[0;35m'       # Purple
 LIGHT_BLUE='\033[0;94m'   # Light Blue
+RESET_COLOR='\033[0m'  # Restaura as configurações de cores para o padrão.
 
 #EXAMPLE
 #echo -e "${Blue}Welcome ${WHITE}to ${RED}France"
@@ -41,12 +42,12 @@ LIGHT_BLUE='\033[0;94m'   # Light Blue
 ###################### STEP 0 ######################
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
-    echo "[ ${BOLD_RED}! ] This script must be executed in the root directory of the system."
+    echo "[ ${BOLD_RED}!${RESET_COLOR} ] This script must be executed in the root directory of the system."
     exit 1
 fi
-echo "[ ${BOLD_RED}! ] Changing to the root directory..."
+echo "[ ${BOLD_RED}!${RESET_COLOR} ] Changing to the root directory..."
 cd /
-echo "[ ${BOLD_RED}! ] pwd result is: $(pwd)"
+echo "[ ${BOLD_RED}!${RESET_COLOR} ] pwd result is: $(pwd)"
 
 # Redirect verbose to log file and display on screen
 exec > >(tee -i nextcloud-dietpi.log)
@@ -56,7 +57,7 @@ exec 2>&1
 NEXTCLOUD_IP=$(hostname -I | awk '{print $1}')
 
 # Prompt the user to confirm and use the local IP address
-read -p "[ ${BOLD_YELLOW}! ] Your local IP address is ${YELLOW}$NEXTCLOUD_IP. Is this correct? (Y/N): " confirm
+read -p "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Your local IP address is ${YELLOW}$NEXTCLOUD_IP${RESET_COLOR}. Is this correct? (Y/N): " confirm
 
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]]; then
     echo "Please configure your local IP address correctly and re-run the script."
@@ -65,28 +66,28 @@ fi
 ################## END OF STEP 0 ###################
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-echo -e "\033[1;32mInstalling rsync from debian repository through 'apt install'.\033[0m"
+###################### STEP 1 ######################
+echo -e "${LIGHT_GREEN}Installing rsync from debian repository through 'apt install'.${RESET_COLOR}"
 sudo apt install rsync
-echo -e "\033[1;32mInstalling Nextcloud from DietPi Market.\033[0m"
+echo -e "${LIGHT_GREEN}Installing Nextcloud from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 114
-echo -e "\033[1;32mInstalling Docker from DietPi Market.\033[0m"
+echo -e "\${LIGHT_GREEN}Installing Docker from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 162
-echo -e "\033[1;32mInstalling Docker-Composer from DietPi Market.\033[0m"
+echo -e "${LIGHT_GREEN}Installing Docker-Composer from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 134
-echo -e "\033[1;32mInstalling FFMPEG from DietPi Market.\033[0m"
+echo -e "${LIGHT_GREEN}Installing FFMPEG from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 7
-echo -e "\033[1;32mAll softwares needed from market were installed.\033[0m"
+
 
 # Install Nginx Proxy Manager
-echo -e "\033[1;32mPreparing for NGINX PROXY MANAGER installation\033[0m"
+echo -e "${LIGHT_GREEN}Preparing for NGINX PROXY MANAGER installation${RESET_COLOR}"
 cd /
-mkdir docker/ && cd docker/
+sudo mkdir docker/ && cd docker/
 cd /docker/
-mkdir nginx && cd nginx
+sudo mkdir nginx && cd nginx
 touch docker-compose.yml
 echo -e "Creating docker-compose.yml..."
-cat <<EOF >>/docker/nginx/docker-compose.yml
+sudo cat <<EOF >>/docker/nginx/docker-compose.yml
 version: '3.8'
 services:
   app:
@@ -101,26 +102,19 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 
 EOF
-echo -e "Opening folder of docker-compose.yml"
+
+echo -e "${LIGHT_GREEN}Opening folder of docker-compose.yml${RESET_COLOR}"
 cd /docker/nginx
-echo -e "Installing NGINX PROXY MANAGER using Docker Compose"
+echo -e "${LIGHT_GREEN}Installing NGINX PROXY MANAGER using Docker Compose${RESET_COLOR}"
 docker compose up -d
-echo -e "\033[1;32mNGINX PROXY MANAGER INSTALLED VIA DOCKER\033[0m"
+echo -e "${LIGHT_GREEN}NGINX PROXY MANAGER INSTALLED VIA DOCKER$${RESET_COLOR}"
+
+echo -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] All softwares needed were installed.{$RESET_COLOR}"
+
+################## END OF STEP 1 ###################
 
 
-while true; do
-    read -p "Were all softwares well installed? Once done, type 'CONTINUE' to proceed with the script: " user_input
-    if [ "$user_input" == "CONTINUE" ]; then
-        break
-    else
-        echo -e "\033[1;31mInvalid input. Please type 'CONTINUE' to proceed IF NGINX is configured.\033[0m"
-    fi
-done
-
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+###################### STEP 2 ######################
 
 # Create the nextcloud.conf file
 CONF_FILE="/etc/apache2/sites-available/nextcloud.conf"
@@ -158,36 +152,33 @@ while true; do
     fi
 done
 
+################## END OF STEP 2 ###################
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+###################### STEP 3 ######################
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Enable the new configuration
 sudo a2ensite nextcloud.conf
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 4 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Disable other configurations
 sudo a2dissite 000-default.conf
 sudo a2dissite dietpi-nextcloud.conf
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 4 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 5 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Restart Apache
 sudo systemctl reload apache2
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 5 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 6 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+################## END OF STEP 3 ###################
+
+###################### STEP 4 ######################
+
 # Edit config.php and make necessary changes
 sudo sed -i "/'htaccess.RewriteBase' => '\/nextcloud/d" /var/www/nextcloud/config/config.php
 sudo sed -i "s|'http://localhost/nextcloud|'http://localhost|g" /var/www/nextcloud/config/config.php
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 6 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Execute maintenance:update:htaccess
 sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
 echo -e "\033[1;32mConfig.php updated and maintenance:update:htaccess executed.\033[0m"
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 7 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+################## END OF STEP 4 ###################
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 9 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Prompt user to configure NGINX Proxy Manager
