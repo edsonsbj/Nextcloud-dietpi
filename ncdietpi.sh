@@ -109,13 +109,16 @@ cat <<EOF > $CONF_FILE
 EOF
 
 echo -e "\033[1;32mCreated $CONF_FILE with the specified content.\033[0m"
+cat $CONF_FILE
 
 while true; do
-    read -p "Access $CONF_FILE to edit domain and IP in another SSH Terminal Screen. After that, type 'CONTINUE' to proceed with the script: " user_input
-    if [ "$user_input" == "CONTINUE" ]; then
+    read -p "Is the LOCAL IP address in $CONF_FILE correct for your Nextcloud? (Y/N): " user_input
+    if [ "$user_input" == "Y" ] || [ "$user_input" == "y" ]; then
         break
+    elif [ "$user_input" == "N" ] || [ "$user_input" == "n" ]; then
+        nano $CONF_FILE
     else
-        echo -e "\033[1;31mInvalid input. Please type 'CONTINUE' to proceed IF $CONF_FILE is configured.\033[0m"
+        echo -e "\033[1;31mInvalid input. Please enter 'Y' or 'N'.\033[0m"
     fi
 done
 
