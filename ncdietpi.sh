@@ -57,7 +57,7 @@ exec 2>&1
 NEXTCLOUD_IP=$(hostname -I | awk '{print $1}')
 
 # Prompt the user to confirm and use the local IP address
-read -p -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Your local IP address is ${YELLOW}$NEXTCLOUD_IP${RESET_COLOR}. Is this correct? (Y/N): " confirm
+read -p "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Your local IP address is ${YELLOW}$NEXTCLOUD_IP${RESET_COLOR}. Is this correct? (Y/N): " confirm
 
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]]; then
     echo "Please configure your local IP address correctly and re-run the script."
@@ -183,7 +183,7 @@ echo -e "\033[1;32mConfig.php updated and maintenance:update:htaccess executed.\
 ###################### STEP 5 ######################
 # Prompt user to configure NGINX Proxy Manager
 while true; do
-    read -p  -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Please configure NGINX Proxy Manager now (E-mail Adsress: ${YELLOW}admin@example.com${RESET_COLOR} | Password: ${YELLOW}changeme${RESET_COLOR}) . Once done, type 'CONTINUE' to proceed with the script: " user_input
+    read -p "[ ${BOLD_YELLOW}!${RESET_COLOR} ] Please configure NGINX Proxy Manager now (E-mail Adsress: ${YELLOW}admin@example.com${RESET_COLOR} | Password: ${YELLOW}changeme${RESET_COLOR}) . Once done, type 'CONTINUE' to proceed with the script: " user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
     else
@@ -195,7 +195,7 @@ done
 ###################### STEP 6 ######################
 
 while true; do
-    read -p  -e "Access /var/www/nextcloud/config/config.php to edit domain and IP in another SSH Terminal Screen. After that, type 'CONTINUE' to proceed with the script: " user_input
+    read -p "Access /var/www/nextcloud/config/config.php to edit domain and IP in another SSH Terminal Screen. After that, type 'CONTINUE' to proceed with the script: " user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
     else
