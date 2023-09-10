@@ -87,7 +87,7 @@ cd /docker/
 sudo mkdir nginx && cd nginx
 touch docker-compose.yml
 echo -e "Creating docker-compose.yml..."
-sudo cat <<EOF >>/docker/nginx/docker-compose.yml
+cat <<EOF >>/docker/nginx/docker-compose.yml
 version: '3.8'
 services:
   app:
