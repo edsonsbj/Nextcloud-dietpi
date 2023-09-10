@@ -8,7 +8,7 @@
 Where some scripts used in Nextcloud can be found
 
 ## STEP 1: Flash Dietpi in a MicroSD CARD
-
+cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x *.sh && sudo ./ncdietpi.sh
 
 # THIS SCRIPT WAS TESTED IN:
 #	[X] Raspberry Pi 4B+
