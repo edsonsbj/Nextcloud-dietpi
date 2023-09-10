@@ -1,4 +1,3 @@
-
 <?php
 $CONFIG = array (
   'passwordsalt' => 'DEFINED DURING INSTALLATION',
