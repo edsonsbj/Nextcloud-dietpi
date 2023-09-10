@@ -70,6 +70,8 @@ fi
 ###################### STEP 1 ######################
 echo -e "${LIGHT_GREEN}Installing rsync from debian repository through 'apt install'.${RESET_COLOR}"
 sudo apt install rsync
+echo -e "${LIGHT_GREEN}Installing Apache2 from DietPi Market.${RESET_COLOR}"
+/boot/dietpi/dietpi-software install 83
 echo -e "${LIGHT_GREEN}Installing Nextcloud from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 114
 echo -e "\${LIGHT_GREEN}Installing Docker from DietPi Market.${RESET_COLOR}"
