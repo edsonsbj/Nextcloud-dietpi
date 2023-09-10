@@ -1,14 +1,51 @@
 #!/bin/bash
 
+###################### COLLOR PALETTE ######################
+BLACK='\033[0;30m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
+
+BOLD_BLACK='\033[1;30m'
+BOLD_RED='\033[1;31m'
+BOLD_GREEN='\033[1;32m'
+BOLD_YELLOW='\033[1;33m'
+BOLD_BLUE='\033[1;34m'
+BOLD_MAGENTA='\033[1;35m'
+BOLD_CYAN='\033[1;36m'
+BOLD_WHITE='\033[1;37m'
+
+BACKGROUND_BLACK='\033[40m'
+BACKGROUND_RED='\033[41m'
+BACKGROUND_GREEN='\033[42m'
+BACKGROUND_YELLOW='\033[43m'
+BACKGROUND_BLUE='\033[44m'
+BACKGROUND_MAGENTA='\033[45m'
+BACKGROUND_CYAN='\033[46m'
+BACKGROUND_WHITE='\033[47m'
+
+LIGHT_GREEN='\033[0;92m'  # Light Green
+ORANGE='\033[0;33m'       # Orange
+PURPLE='\033[0;35m'       # Purple
+LIGHT_BLUE='\033[0;94m'   # Light Blue
+
+#EXAMPLE
+#echo -e "${Blue}Welcome ${WHITE}to ${RED}France"
+################## END OF COLLOR PALETTE ###################
+
+
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
-    echo "This script must be executed in the root directory of the system."
+    echo "[ ${BOLD_RED}! ] This script must be executed in the root directory of the system."
     exit 1
 fi
-echo "Changing to the root directory..."
+echo "[ ${BOLD_RED}! ] Changing to the root directory..."
 cd /
-echo "pwd is $(pwd)"
-echo "location of the database backup file is " '/'
+echo "[ ${BOLD_RED}! ] pwd result is: $(pwd)"
 
 # Redirect verbose to log file and display on screen
 exec > >(tee -i nextcloud-dietpi.log)
