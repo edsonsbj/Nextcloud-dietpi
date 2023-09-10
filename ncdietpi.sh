@@ -38,6 +38,7 @@ LIGHT_BLUE='\033[0;94m'   # Light Blue
 ################## END OF COLLOR PALETTE ###################
 
 
+###################### STEP 0 ######################
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
     echo "[ ${BOLD_RED}! ] This script must be executed in the root directory of the system."
@@ -51,19 +52,17 @@ echo "[ ${BOLD_RED}! ] pwd result is: $(pwd)"
 exec > >(tee -i nextcloud-dietpi.log)
 exec 2>&1
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 0 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 # Get the local IP address of the device
 NEXTCLOUD_IP=$(hostname -I | awk '{print $1}')
 
 # Prompt the user to confirm and use the local IP address
-read -p "Your local IP address is $NEXTCLOUD_IP. Is this correct? (Y/N): " confirm
+read -p "[ ${BOLD_YELLOW}! ] Your local IP address is ${YELLOW}$NEXTCLOUD_IP. Is this correct? (Y/N): " confirm
 
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]]; then
     echo "Please configure your local IP address correctly and re-run the script."
     exit 1
 fi
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FIM ETAPA 0 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+################## END OF STEP 0 ###################
 
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ETAPA 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
