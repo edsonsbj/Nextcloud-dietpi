@@ -60,8 +60,8 @@ fi
 ###################### STEP 1 ######################
 echo -e "${LIGHT_GREEN}Installing rsync from debian repository through 'apt install'.${RESET_COLOR}"
 sudo apt install rsync
-echo -e "${LIGHT_GREEN}Installing Apache2 from DietPi Market.${RESET_COLOR}"
-/boot/dietpi/dietpi-software install 83
+#echo -e "${LIGHT_GREEN}Installing Apache2 from DietPi Market.${RESET_COLOR}"
+#/boot/dietpi/dietpi-software install 83
 echo -e "${LIGHT_GREEN}Installing Nextcloud from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 114
 echo -e "\${LIGHT_GREEN}Installing Docker from DietPi Market.${RESET_COLOR}"
@@ -316,6 +316,8 @@ cat <<EOF > "$config_file"
 
 EOF
 
+chown -R www-data:www-data /var/www/nextcloud
+chmod -R 755 /var/www/nextcloud
 sudo chown www-data:www-data /var/www/nextcloud/config/config.php
 
 while true; do
@@ -335,19 +337,10 @@ done
 
 ###################### STEP 7 ######################
 # Output TODO items with formatting
-#echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
-#sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
+echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
+sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
+echo -e "PASSWORD CHANGE"
 
-
-while true; do
-    echo -e "PASSWORD CHANGE"
-    read user_input
-    if [ "$user_input" == "CONTINUE" ]; then
-        break
-    else
-        echo -e "Invalid input. Please type 'CONTINUE' to proceed IF it's done."
-    fi
-done
 ################## END OF STEP 7 ###################
 
 ###################### STEP 8 ######################
