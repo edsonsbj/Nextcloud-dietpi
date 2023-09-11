@@ -261,6 +261,7 @@ sudo rm "$config_file"
 cat <<EOF > "$config_file"
 <?php
 \$CONFIG = array (
+  'htaccess.RewriteBase' => '/',
   'passwordsalt' => '$passwordsalt_extracted',
   'secret' => '$secret_extracted',
   'trusted_domains' =>
