@@ -235,26 +235,10 @@ while true; do
     fi
 done
 
-while true; do
-    read -p "Please confirm the domain you entered is '$new_domain'. Is this correct? (Y/N): " confirm
-    case $confirm in
-        [yY])
-            # Edite ou adicione a linha 'overwritehost'
-            sed -i "s/'overwritehost' =>.*/'overwritehost' => '$new_domain:8443',/" "$config_file"
-            break
-            ;;
-        [nN])
-            echo "Please try again."
-            exit 1
-            ;;
-        *)
-            echo "Invalid input. Please enter 'Y' or 'N'."
-            ;;
-    esac
-done
-
-
-sed -i "s/'datadirectory' =>.*/'datadirectory' => '/media/myCloudDrive/nextcloud_data',/" "$config_file"
+sed -i "/'trusted_domains' =>/a \ \ \ \ 1 => '$NEXTCLOUD_IP'," "$config_file"
+sed -i "s|'overwritehost' =>.*|'overwritehost' => '$new_domain:8443',|" "$config_file"
+sed -i "s|'overwriteprotocol' =>.*|'overwriteprotocol' => 'https',|" "$config_file"
+sed -i "s|'datadirectory' =>.*|'datadirectory' => '/mnt/dietpi_userdata/nextcloud_data',|" "$config_file"
 sed -i "/'instanceid' =>/a \ \ \ \ 'maintenance' => false," "$config_file"
 sed -i "/'maintenance' => false,/a \ \ \ \ array (\n \ \ \ \ \ \ 'host' => 'localhost',\n \ \ \ \ \ \ 'port' => 6379,\n \ \ \ \ )," "$config_file"
 sed -i "/array (\n \ \ \ \ \ \ 'host' => 'localhost',\n \ \ \ \ \ \ 'port' => 6379,\n \ \ \ \ ),/a \ \ \ \ 'enabledPreviewProviders' =>\n \ \ \ \ array (\n \ \ \ \ \ \ 0 => 'OC\\Preview\\PNG',\n \ \ \ \ \ \ 1 => 'OC\\Preview\\JPEG',\n \ \ \ \ \ \ 2 => 'OC\\Preview\\GIF',\n \ \ \ \ \ \ 3 => 'OC\\Preview\\BMP',\n \ \ \ \ \ \ 4 => 'OC\\Preview\\XBitmap',\n \ \ \ \ \ \ 5 => 'OC\\Preview\\Movie',\n \ \ \ \ \ \ 6 => 'OC\\Preview\\PDF',\n \ \ \ \ \ \ 7 => 'OC\\Preview\\MP3',\n \ \ \ \ \ \ 8 => 'OC\\Preview\\TXT',\n \ \ \ \ \ \ 9 => 'OC\\Preview\\MarkDown',\n \ \ \ \ \ \ 10 => 'OC\\Preview\\Image',\n \ \ \ \ \ \ 11 => 'OC\\Preview\\HEIC',\n \ \ \ \ \ \ 12 => 'OC\\Preview\\TIFF',\n \ \ \ \ )," "$config_file"
