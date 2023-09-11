@@ -356,7 +356,7 @@ unset passwordsalt_extracted secret_extracted dbpassword_extracted instanceid_ex
 unset first_domain second_domain
 ################## END OF STEP 8 ###################
 
-echo -e "\n\n\ ${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
+echo -e "\n\n${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
 echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
 echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
 echo -e "Thank you for using this script!"
