@@ -60,8 +60,8 @@ fi
 ###################### STEP 1 ######################
 echo -e "${LIGHT_GREEN}Installing rsync from debian repository through 'apt install'.${RESET_COLOR}"
 sudo apt install rsync
-#echo -e "${LIGHT_GREEN}Installing Apache2 from DietPi Market.${RESET_COLOR}"
-#/boot/dietpi/dietpi-software install 83
+echo -e "${LIGHT_GREEN}Installing Apache2 from DietPi Market.${RESET_COLOR}"
+/boot/dietpi/dietpi-software install 83
 echo -e "${LIGHT_GREEN}Installing Nextcloud from DietPi Market.${RESET_COLOR}"
 /boot/dietpi/dietpi-software install 114
 echo -e "\${LIGHT_GREEN}Installing Docker from DietPi Market.${RESET_COLOR}"
@@ -73,7 +73,8 @@ echo -e "${LIGHT_GREEN}Installing FFMPEG from DietPi Market.${RESET_COLOR}"
 echo -e "${LIGHT_GREEN}Installing PHP-BCMATCH, PHP-GMP e PMP-IMAGICK from debian repository.${RESET_COLOR}"
 sudo apt install imagemagick php8.2-{bcmath,gmp,imagick} -y
 
-
+chown -R www-data:www-data /var/www/nextcloud
+chmod -R 755 /var/www/nextcloud
 
 
 # Install Nginx Proxy Manager
@@ -169,8 +170,8 @@ sudo systemctl reload apache2
 ###################### STEP 4 ######################
 
 # Edit config.php and make necessary changes
-sudo sed -i "/'htaccess.RewriteBase' => '\/nextcloud/d" /var/www/nextcloud/config/config.php
-sudo sed -i "s|'http://localhost/nextcloud|'http://localhost|g" /var/www/nextcloud/config/config.php
+#sudo sed -i "/'htaccess.RewriteBase' => '\/nextcloud/d" /var/www/nextcloud/config/config.php
+#sudo sed -i "s|'http://localhost/nextcloud|'http://localhost|g" /var/www/nextcloud/config/config.php
 
 # Execute maintenance:update:htaccess
 sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
@@ -192,6 +193,8 @@ done
 ################## END OF STEP 5 ###################
 
 ###################### STEP 6 ######################
+
+sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
 # Check if config.php was created before
 config_file='/var/www/nextcloud/config/config.php'
@@ -316,10 +319,6 @@ cat <<EOF > "$config_file"
 
 EOF
 
-chown -R www-data:www-data /var/www/nextcloud
-chmod -R 755 /var/www/nextcloud
-sudo chown www-data:www-data /var/www/nextcloud/config/config.php
-
 while true; do
     echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
     read user_input
@@ -340,7 +339,7 @@ done
 echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
 sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 echo -e "PASSWORD CHANGE"
-
+sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 ################## END OF STEP 7 ###################
 
 ###################### STEP 8 ######################
