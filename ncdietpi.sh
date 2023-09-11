@@ -318,6 +318,8 @@ cat <<EOF > "$config_file"
 );
 
 EOF
+chown www-data:www-data "$config_file"
+chmod 640 "$config_file"
 
 while true; do
     echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
