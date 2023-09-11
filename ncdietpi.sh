@@ -1,4 +1,4 @@
-te#!/bin/bash
+#!/bin/bash
 
 ###################### COLLOR PALETTE ######################
 BLACK='\033[0;30m'
