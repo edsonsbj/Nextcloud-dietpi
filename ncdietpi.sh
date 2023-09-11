@@ -335,8 +335,8 @@ done
 
 ###################### STEP 7 ######################
 # Output TODO items with formatting
-echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
-sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
+#echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
+#sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 
 
 while true; do
