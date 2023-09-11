@@ -215,37 +215,120 @@ fi
 
 cp "$config_file" "$config_file.bak"
 
-# Add the IP into config.php
-sed -i "/'trusted_domains' =>/a \ \ \ \ 1 => '$NEXTCLOUD_IP'," "$config_file"
-
-# Change 'overwritehost' e 'overwriteprotocol' with domain
-
-# User informs domains
 while true; do
+    # Prompt the user to enter the domain (without 'http', 'https', 'www', or 'http://')
     echo -e -n "Please enter the domain (without 'http', 'https', 'www', or 'http://') for 'overwritehost' (e.g., example.com): "
-    read new_domain
-    # Remove blank/empty spaces
-    new_domain=$(echo "$new_domain" | tr -d '[:space:]')
+    read first_domain
 
-    # Verify domain
-    if [[ ! "$new_domain" =~ ^[a-zA-Z0-9.-]+$ || "$new_domain" == *":"* ]]; then
+    # Remove blank/empty spaces
+    first_domain=$(echo "$first_domain" | tr -d '[:space:]')
+
+    # Verify domain format
+    if [[ ! "$first_domain" =~ ^[a-zA-Z0-9.-]+$ || "$first_domain" == *":"* ]]; then
         echo  -e " [ ${BOLD_RED}!${RESET_COLOR} ] Invalid domain format or contains ':' symbol at the end. Please try again."
     else
         break
     fi
 done
 
-sed -i "/'trusted_domains' =>/a \ \ \ \ 1 => '$NEXTCLOUD_IP'," "$config_file"
-sed -i "s|'overwritehost' =>.*|'overwritehost' => '$new_domain:8443',|" "$config_file"
-sed -i "s|'overwriteprotocol' =>.*|'overwriteprotocol' => 'https',|" "$config_file"
-sed -i "s|'datadirectory' =>.*|'datadirectory' => '/mnt/dietpi_userdata/nextcloud_data',|" "$config_file"
-sed -i "/'instanceid' =>/a \ \ \ \ 'maintenance' => false," "$config_file"
-sed -i "/'maintenance' => false,/a \ \ \ \ array (\n \ \ \ \ \ \ 'host' => 'localhost',\n \ \ \ \ \ \ 'port' => 6379,\n \ \ \ \ )," "$config_file"
-sed -i "/array (\n \ \ \ \ \ \ 'host' => 'localhost',\n \ \ \ \ \ \ 'port' => 6379,\n \ \ \ \ ),/a \ \ \ \ 'enabledPreviewProviders' =>\n \ \ \ \ array (\n \ \ \ \ \ \ 0 => 'OC\\Preview\\PNG',\n \ \ \ \ \ \ 1 => 'OC\\Preview\\JPEG',\n \ \ \ \ \ \ 2 => 'OC\\Preview\\GIF',\n \ \ \ \ \ \ 3 => 'OC\\Preview\\BMP',\n \ \ \ \ \ \ 4 => 'OC\\Preview\\XBitmap',\n \ \ \ \ \ \ 5 => 'OC\\Preview\\Movie',\n \ \ \ \ \ \ 6 => 'OC\\Preview\\PDF',\n \ \ \ \ \ \ 7 => 'OC\\Preview\\MP3',\n \ \ \ \ \ \ 8 => 'OC\\Preview\\TXT',\n \ \ \ \ \ \ 9 => 'OC\\Preview\\MarkDown',\n \ \ \ \ \ \ 10 => 'OC\\Preview\\Image',\n \ \ \ \ \ \ 11 => 'OC\\Preview\\HEIC',\n \ \ \ \ \ \ 12 => 'OC\\Preview\\TIFF',\n \ \ \ \ )," "$config_file"
-sed -i "/'enabledPreviewProviders' =>/a \ \ \ \ 'trashbin_retention_obligation' => 'auto,30'," "$config_file"
-sed -i "/'trashbin_retention_obligation' =>/a \ \ \ \ 'versions_retention_obligation' => 'auto,30'," "$config_file"
+while true; do
+    # Prompt the user to enter the domain again for confirmation
+    echo -e -n "Please re-enter the domain to confirm: "
+    read second_domain
 
+    # Remove blank/empty spaces
+    second_domain=$(echo "$second_domain" | tr -d '[:space:]')
 
+    # Check if the second domain matches the first one
+    if [ "$second_domain" == "$first_domain" ]; then
+        break
+    else
+        echo -e " [ ${BOLD_RED}!${RESET_COLOR} ] Domains do not match. Please try again."
+    fi
+done
+
+# Now, both domains match and are stored in the 'first_domain' variable
+echo "[ ${BOLD_YELLOW}!${RESET_COLOR} ] You entered the domain: ${BOLD_GREEN}$first_domain${RESET_COLOR} "
+
+# Path to the config.php backup file
+config_file_bak='/path/to/your/config.php.bak'
+
+# Check if the config.php backup file exists
+if [ ! -f "$config_file_bak" ]; then
+    echo "Config.php backup file not found."
+    exit 1
+fi
+
+# Extract values from the config.php backup file
+passwordsalt_extracted=$(grep -oP "'passwordsalt' => '\K[^']+" "$config_file_bak")
+secret_extracted=$(grep -oP "'secret' => '\K[^']+" "$config_file_bak")
+dbpassword_extracted=$(grep -oP "'dbpassword' => '\K[^']+" "$config_file_bak")
+instanceid_extracted=$(grep -oP "'instanceid' => '\K[^']+" "$config_file_bak")
+
+# Display the extracted values
+echo "variável_1 = $passwordsalt"
+echo "variável_2 = $secret"
+echo "variável_3 = $dbpassword"
+echo "variável_4 = $instanceid"
+
+sudo rm "$config_file"
+
+cat <<EOF > $config_file
+<?php
+$CONFIG = array (
+  'passwordsalt' => $passwordsalt_extracted,
+  'secret' => $secret_extracted,
+  'trusted_domains' =>
+  array (
+    0 => 'localhost',
+    1 => $NEXTCLOUD_IP,
+    ),
+  'overwritehost' => $new_domain,
+  'overwriteprotocol' => 'https',
+  'datadirectory' => '/media/myCloudDrive/nextcloud_data',
+  'dbtype' => 'mysql',
+  'version' => '27.0.2.1',
+  'hashingThreads' => 4,
+  'memcache.local' => '\\OC\\Memcache\\APCu',
+  'filelocking.enabled' => true,
+  'memcache.locking' => '\\OC\\Memcache\\Redis',
+  'redis' => array ('host' => '/run/redis/redis-server.sock', 'port' => 0,),
+  'overwrite.cli.url' => 'http://localhost',
+  'dbname' => 'nextcloud',
+  'dbhost' => 'localhost',
+  'dbport' => '',
+  'dbtableprefix' => 'oc_',
+  'mysql.utf8mb4' => true,
+  'dbuser' => 'oc_admin',
+  'dbpassword' => $dbpassword_extracted,
+  'installed' => true,
+  'instanceid' => $instanceid_extracted,
+  'maintenance' => false,
+  array (
+    'host' => 'localhost',
+    'port' => 6379,
+  ),
+  'enabledPreviewProviders' =>
+  array (
+    0 => 'OC\\Preview\\PNG',
+    1 => 'OC\\Preview\\JPEG',
+    2 => 'OC\\Preview\\GIF',
+    3 => 'OC\\Preview\\BMP',
+    4 => 'OC\\Preview\\XBitmap',
+    5 => 'OC\\Preview\\Movie',
+    6 => 'OC\\Preview\\PDF',
+    7 => 'OC\\Preview\\MP3',
+    8 => 'OC\\Preview\\TXT',
+    9 => 'OC\\Preview\\MarkDown',
+    10 => 'OC\\Preview\\Image',
+    11 => 'OC\\Preview\\HEIC',
+    12 => 'OC\\Preview\\TIFF',
+  ),
+  'trashbin_retention_obligation' => 'auto,30',
+  'versions_retention_obligation' => 'auto,30',
+
+);
+EOF
 
 while true; do
     echo -e "Edit ${YELLOW}$config_file{RESET_COLOR} has been changed. In another SSH Terminal Screen check if everything is okay and after that, type 'CONTINUE' to proceed with the script: "
