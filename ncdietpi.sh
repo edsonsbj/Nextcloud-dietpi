@@ -249,10 +249,10 @@ if [ ! -f "$config_file_bak" ]; then
 fi
 
 # Extract values from the config.php backup file
-passwordsalt_extracted=$(grep -oP "'passwordsalt' => '\K[^']+" "$config_file_bak")
-secret_extracted=$(grep -oP "'secret' => '\K[^']+" "$config_file_bak")
-dbpassword_extracted=$(grep -oP "'dbpassword' => '\K[^']+" "$config_file_bak")
-instanceid_extracted=$(grep -oP "'instanceid' => '\K[^']+" "$config_file_bak")
+passwordsalt_extracted=$(grep -oP "'passwordsalt' => '\K[^']+" "$config_file")
+secret_extracted=$(grep -oP "'secret' => '\K[^']+" "$config_file")
+dbpassword_extracted=$(grep -oP "'dbpassword' => '\K[^']+" "$config_file")
+instanceid_extracted=$(grep -oP "'instanceid' => '\K[^']+" "$config_file")
 
 # Display the extracted values
 echo "variável_1 = $passwordsalt_extracted"
