@@ -268,9 +268,9 @@ cat <<EOF > "$custom_config_file"
     'trusted_domains' =>
     array (
         0 => 'localhost',
-        1 => '192.168.0.72',
+        1 => '$NEXTCLOUD_IP',
         ),
-    'overwritehost' => 'thepandacloud.duckdns.org',
+    'overwritehost' => '$first_domain',
     'overwriteprotocol' => 'https',
     'datadirectory' => '/mnt/dietpi_userdata/nextcloud_data',
     'dbtype' => 'mysql',
@@ -291,9 +291,9 @@ cat <<EOF > "$custom_config_file"
     'dbtableprefix' => 'oc_',
     'mysql.utf8mb4' => true,
     'dbuser' => 'oc_admin',
-    'dbpassword' => '}d[6#7lc~4uTy9:=/VsB1cW?cpo<8U',
+    'dbpassword' => '$dbpassword_extracted',
     'installed' => true,
-    'instanceid' => 'oci43d05zwzx',
+    'instanceid' => '$instanceid_extracted',
     'maintenance' => true,
     array (
         'host' => 'localhost',
@@ -321,10 +321,8 @@ cat <<EOF > "$custom_config_file"
 
 EOF
 
-permissions=$(stat -c "%a" "$config_file")
-owner_group=$(stat -c "%U:%G" "$config_file")
-chmod "$permissions" "$custom_config_file" #copy the permissions of config.php to custom_config.php
-chown "$owner_group" "$custom_config_file" #copy the owner and group of config.php to custom_config.php
+chmod --reference=config.php custom_config.php #Copy permissions of config.php to custom_config.php
+chown --reference=config.php custom_config.php #Copy the properties and group of config.php to custom_config.php
 
 while true; do
     echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
