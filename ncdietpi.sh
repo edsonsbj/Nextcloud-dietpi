@@ -1,4 +1,4 @@
-#!/bin/bash
+te#!/bin/bash
 
 ###################### COLLOR PALETTE ######################
 BLACK='\033[0;30m'
@@ -264,14 +264,14 @@ dbpassword_extracted=$(grep -oP "'dbpassword' => '\K[^']+" "$config_file_bak")
 instanceid_extracted=$(grep -oP "'instanceid' => '\K[^']+" "$config_file_bak")
 
 # Display the extracted values
-echo "variável_1 = $passwordsalt"
-echo "variável_2 = $secret"
-echo "variável_3 = $dbpassword"
-echo "variável_4 = $instanceid"
+echo "variável_1 = $passwordsalt_extracted"
+echo "variável_2 = $secret_extracted"
+echo "variável_3 = $dbpassword_extracted"
+echo "variável_4 = $instanceid_extracted"
 
 sudo rm "$config_file"
 
-cat <<EOF > $config_file
+cat <<EOF > "$config_file"
 <?php
 $CONFIG = array (
   'passwordsalt' => $passwordsalt_extracted,
