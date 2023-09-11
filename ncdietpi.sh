@@ -316,6 +316,8 @@ cat <<EOF > "$config_file"
 
 EOF
 
+sudo chown www-data:www-data /var/www/nextcloud/config/config.php
+
 echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
 
 ################## END OF STEP 6 ###################
@@ -325,6 +327,15 @@ echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another S
 echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
 sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 ################## END OF STEP 7 ###################
+
+unset BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE
+unset BOLD_BLACK BOLD_RED BOLD_GREEN BOLD_YELLOW BOLD_BLUE BOLD_MAGENTA BOLD_CYAN BOLD_WHITE
+unset BACKGROUND_BLACK BACKGROUND_RED BACKGROUND_GREEN BACKGROUND_YELLOW BACKGROUND_BLUE BACKGROUND_MAGENTA BACKGROUND_CYAN BACKGROUND_WHITE
+unset LIGHT_GREEN ORANGE PURPLE LIGHT_BLUE RESET_COLOR
+unset NEXTCLOUD_IP confirm CONF_FILE config_file config_file_bak
+unset passwordsalt_extracted secret_extracted dbpassword_extracted instanceid_extracted
+unset first_domain second_domain
+
 
 echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED in ${hours}h ${minutes}m ${seconds}s!${RESET_COLOR}"
 echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
