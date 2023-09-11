@@ -260,7 +260,7 @@ sudo rm "$config_file"
 
 cat <<EOF > "$config_file"
 <?php
-$CONFIG = array (
+\$CONFIG = array (
   'passwordsalt' => '$passwordsalt_extracted',
   'secret' => '$secret_extracted',
   'trusted_domains' =>
