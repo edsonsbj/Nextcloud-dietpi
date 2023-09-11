@@ -329,7 +329,7 @@ $CONFIG = array (
 EOF
 
 while true; do
-    echo -e "Edit ${YELLOW}$config_file{RESET_COLOR} has been changed. In another SSH Terminal Screen check if everything is okay and after that, type 'CONTINUE' to proceed with the script: "
+    echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay and after that, type 'CONTINUE' to proceed with the script: "
     read user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
