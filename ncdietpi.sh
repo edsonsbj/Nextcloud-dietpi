@@ -40,31 +40,8 @@ RESET_COLOR='\033[0m'  # Restaura as configurações de cores para o padrão.
 
 
 ###################### STEP 0 ######################
-
-start_time=$(date +%s)
-
-# Check if the user is in the Linux root directory
-if [ "$PWD" != "/" ]; then
-    echo "[ ${BOLD_RED}!${RESET_COLOR} ] This script must be executed in the root directory of the system."
-    exit 1
-fi
-echo -e "[ ${BOLD_RED}!${RESET_COLOR} ] Changing to the root directory..."
-cd /
-echo -e "[ ${BOLD_RED}!${RESET_COLOR} ] pwd result is: $(pwd)"
-
-# Redirect verbose to log file and display on screen
-if [ -n "$BASH" ]; then
-    # Bash shell
-    exec > >(tee -i nextcloud-dietpi.log)
-    exec 2>&1
-elif [ -n "$ZSH_NAME" ]; then
-    # Zsh shell
-    exec > >(tee -i nextcloud-dietpi.log)
-    exec 2>&1
-else
-    # Unsupported shell
-    echo "[ ${BOLD_RED}!${RESET_COLOR} ] Unsupported shell. Logging to a file not available."
-fi
+exec > >(tee -i nextcloud-dietpi.log)
+exec 2>&1
 
 # Get the local IP address of the device
 NEXTCLOUD_IP=$(hostname -I | awk '{print $1}')
@@ -290,7 +267,7 @@ $CONFIG = array (
   array (
     0 => 'localhost',
     1 => '$NEXTCLOUD_IP',
-    ),
+  ),
   'overwritehost' => '$second_domain',
   'overwriteprotocol' => 'https',
   'datadirectory' => '/media/myCloudDrive/nextcloud_data',
@@ -334,19 +311,11 @@ $CONFIG = array (
   ),
   'trashbin_retention_obligation' => 'auto,30',
   'versions_retention_obligation' => 'auto,30',
-
 );
+
 EOF
 
-while true; do
-    echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay and after that, type 'CONTINUE' to proceed with the script: "
-    read user_input
-    if [ "$user_input" == "CONTINUE" ]; then
-        break
-    else
-        echo -e "Invalid input. Please type 'CONTINUE' to proceed IF config.php is configured."
-    fi
-done
+echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
 
 ################## END OF STEP 6 ###################
 
@@ -355,16 +324,6 @@ done
 echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
 sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 ################## END OF STEP 7 ###################
-
-end_time=$(date +%s)
-# Calcule a diferença de tempo
-execution_time=$((end_time - start_time))
-
-# Converta o tempo para um formato legível
-hours=$((execution_time / 3600))
-minutes=$((execution_time % 3600 / 60))
-seconds=$((execution_time % 60))
-
 
 echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED in ${hours}h ${minutes}m ${seconds}s!${RESET_COLOR}"
 echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
