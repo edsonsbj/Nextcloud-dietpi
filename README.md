@@ -1,8 +1,7 @@
 <p align="center">
-   <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85">![image](https://github.com/lstavares84/nextcloud/assets/61010791/544e241b-e306-4685-806b-478c157309b4)
-
-
+   <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85">
 </p>
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/544e241b-e306-4685-806b-478c157309b4)
 
 # nextcloud
 
