@@ -1,5 +1,6 @@
 <p align="center">
-   <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85"> <img src="https://github.com/devicons/devicon/blob/master/icons/raspberrypi/raspberrypi-original.svg" width="85" height="85"> 
+   <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85">![image](https://github.com/lstavares84/nextcloud/assets/61010791/544e241b-e306-4685-806b-478c157309b4)
+
 
 </p>
 
@@ -11,19 +12,22 @@ Where some scripts used in Nextcloud can be found
 cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x *.sh && sudo ./ncdietpi.sh
 
 # THIS SCRIPT WAS TESTED IN:
-#	[X] Raspberry Pi 4B+
-#	[X] Raspberry Pi 400
-#	[X] External HDD/SSD
-#	[ ] Flash USB (a.k.a Thumb Driver)
-#	[ ] NoIp Domain
-#	[ ] Cloudflare Domain
-#	[X] Duckdns Domain
-#	[ ] This script install OnlyOffice
-#	[X] This script DOES NOT install Onlyoffice
-#	[ ] This script formats the external HDD/SDD or Flash USB
-#	[X] This script DOES NOT formats the external HDD/SDD or Flash USB
-#	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
-#	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
+	[ ] Raspberry Pi 4B+
+	[ ] Raspberry Pi 400
+	[X] PC Bios
+	[ ] External HDD/SSD
+ 	[X] Internal Sata HDD/SSD
+ 	[X] External USB HDD/SSD  
+	[ ] Flash USB (a.k.a Thumb Driver)
+	[ ] NoIp Domain
+	[ ] Cloudflare Domain
+	[X] Duckdns Domain
+	[ ] This script install OnlyOffice
+	[X] This script DOES NOT install Onlyoffice
+	[ ] This script formats the external HDD/SDD or Flash USB
+	[X] This script DOES NOT formats the external HDD/SDD or Flash USB
+	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
+	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/df0d7815-67f3-41f1-b35a-ab32307c683f)
 
