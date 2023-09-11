@@ -251,7 +251,7 @@ done
 echo "[ ${BOLD_YELLOW}!${RESET_COLOR} ] You entered the domain: ${BOLD_GREEN}$first_domain${RESET_COLOR} "
 
 # Path to the config.php backup file
-config_file_bak='/path/to/your/config.php.bak'
+config_file_bak='/var/www/nextcloud/config/config.php.bak'
 
 # Check if the config.php backup file exists
 if [ ! -f "$config_file_bak" ]; then
