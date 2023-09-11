@@ -198,6 +198,7 @@ sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
 # Check if config.php was created before
 config_file='/var/www/nextcloud/config/config.php'
+custom_config_file='/var/www/nextcloud/config/custom_config.php'
 if [ ! -f "$config_file" ]; then
     echo -e " [ ${BOLD_RED}!${RESET_COLOR} ] File config.php not found ${YELLOW}$config_file{RESET_COLOR}."
     exit 1
@@ -259,9 +260,7 @@ echo "variável_2 = $secret_extracted"
 echo "variável_3 = $dbpassword_extracted"
 echo "variável_4 = $instanceid_extracted"
 
-sudo rm "$config_file"
-
-cat <<EOF > "$config_file"
+cat <<EOF > "$custom_config_file"
 <?php
 \$CONFIG = array (
   'htaccess.RewriteBase' => '/',
@@ -318,8 +317,11 @@ cat <<EOF > "$config_file"
 );
 
 EOF
-chown www-data:www-data "$config_file"
-chmod 640 "$config_file"
+
+permissions=$(stat -c "%a" "$config_file")
+owner_group=$(stat -c "%U:%G" "$config_file")
+chmod "$permissions" "$custom_config_file" #copy the permissions of config.php to custom_config.php
+chown "$owner_group" "$custom_config_file" #copy the owner and group of config.php to custom_config.php
 
 while true; do
     echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
@@ -354,7 +356,7 @@ unset passwordsalt_extracted secret_extracted dbpassword_extracted instanceid_ex
 unset first_domain second_domain
 ################## END OF STEP 8 ###################
 
-echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
+echo -e "\n\n\ ${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
 echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
 echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
 echo -e "Thank you for using this script!"
