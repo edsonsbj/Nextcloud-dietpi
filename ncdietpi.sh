@@ -227,28 +227,26 @@ while true; do
     if [[ ! "$first_domain" =~ ^[a-zA-Z0-9.-]+$ || "$first_domain" == *":"* ]]; then
         echo  -e " [ ${BOLD_RED}!${RESET_COLOR} ] Invalid domain format or contains ':' symbol at the end. Please try again."
     else
-        break
-    fi
-done
+        while true; do
+            # Prompt the user to enter the domain again for confirmation
+            echo -e -n "Please re-enter the domain to confirm: "
+            read second_domain
 
-while true; do
-    # Prompt the user to enter the domain again for confirmation
-    echo -e -n "Please re-enter the domain to confirm: "
-    read second_domain
+            # Remove blank/empty spaces
+            second_domain=$(echo "$second_domain" | tr -d '[:space:]')
 
-    # Remove blank/empty spaces
-    second_domain=$(echo "$second_domain" | tr -d '[:space:]')
-
-    # Check if the second domain matches the first one
-    if [ "$second_domain" == "$first_domain" ]; then
-        break
-    else
-        echo -e " [ ${BOLD_RED}!${RESET_COLOR} ] Domains do not match. Please try again."
+            # Check if the second domain matches the first one
+            if [ "$second_domain" == "$first_domain" ]; then
+                break 2  # Exit both loops if the domains match
+            else
+                echo -e " [ ${BOLD_RED}!${RESET_COLOR} ] Domains do not match. Please try again."
+            fi
+        done
     fi
 done
 
 # Now, both domains match and are stored in the 'first_domain' variable
-echo "[ ${BOLD_YELLOW}!${RESET_COLOR} ] You entered the domain: ${BOLD_GREEN}$first_domain${RESET_COLOR} "
+echo -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] You entered the domain: ${BOLD_GREEN}$first_domain${RESET_COLOR} "
 
 # Path to the config.php backup file
 config_file_bak='/var/www/nextcloud/config/config.php.bak'
