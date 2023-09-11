@@ -317,9 +317,19 @@ cat <<EOF > "$config_file"
 EOF
 
 sudo chown www-data:www-data /var/www/nextcloud/config/config.php
-sudo -u www-data php /var/www/nextcloud/occ
 
-echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
+while true; do
+    echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
+    read user_input
+    if [ "$user_input" == "CONTINUE" ]; then
+        break
+    else
+        echo -e "Invalid input. Please type 'CONTINUE' to proceed IF it's done."
+    fi
+done
+
+
+
 
 ################## END OF STEP 6 ###################
 
@@ -327,6 +337,17 @@ echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another S
 # Output TODO items with formatting
 echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
 sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
+
+
+while true; do
+    echo -e "PASSWORD CHANGE"
+    read user_input
+    if [ "$user_input" == "CONTINUE" ]; then
+        break
+    else
+        echo -e "Invalid input. Please type 'CONTINUE' to proceed IF it's done."
+    fi
+done
 ################## END OF STEP 7 ###################
 
 ###################### STEP 8 ######################
@@ -339,7 +360,7 @@ unset passwordsalt_extracted secret_extracted dbpassword_extracted instanceid_ex
 unset first_domain second_domain
 ################## END OF STEP 8 ###################
 
-echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED in ${hours}h ${minutes}m ${seconds}s!${RESET_COLOR}"
+echo -e "\n\n\${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
 echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
 echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
 echo -e "Thank you for using this script!"
