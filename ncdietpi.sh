@@ -53,8 +53,18 @@ cd /
 echo -e "[ ${BOLD_RED}!${RESET_COLOR} ] pwd result is: $(pwd)"
 
 # Redirect verbose to log file and display on screen
-exec > >(tee -i nextcloud-dietpi.log)
-exec 2>&1
+if [ -n "$BASH" ]; then
+    # Bash shell
+    exec > >(tee -i nextcloud-dietpi.log)
+    exec 2>&1
+elif [ -n "$ZSH_NAME" ]; then
+    # Zsh shell
+    exec > >(tee -i nextcloud-dietpi.log)
+    exec 2>&1
+else
+    # Unsupported shell
+    echo "[ ${BOLD_RED}!${RESET_COLOR} ] Unsupported shell. Logging to a file not available."
+fi
 
 # Get the local IP address of the device
 NEXTCLOUD_IP=$(hostname -I | awk '{print $1}')
