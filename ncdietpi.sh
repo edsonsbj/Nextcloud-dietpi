@@ -274,14 +274,14 @@ sudo rm "$config_file"
 cat <<EOF > "$config_file"
 <?php
 $CONFIG = array (
-  'passwordsalt' => $passwordsalt_extracted,
-  'secret' => $secret_extracted,
+  'passwordsalt' => '$passwordsalt_extracted',
+  'secret' => '$secret_extracted',
   'trusted_domains' =>
   array (
     0 => 'localhost',
-    1 => $NEXTCLOUD_IP,
+    1 => '$NEXTCLOUD_IP',
     ),
-  'overwritehost' => $new_domain,
+  'overwritehost' => '$second_domain',
   'overwriteprotocol' => 'https',
   'datadirectory' => '/media/myCloudDrive/nextcloud_data',
   'dbtype' => 'mysql',
@@ -298,9 +298,9 @@ $CONFIG = array (
   'dbtableprefix' => 'oc_',
   'mysql.utf8mb4' => true,
   'dbuser' => 'oc_admin',
-  'dbpassword' => $dbpassword_extracted,
+  'dbpassword' => '$dbpassword_extracted',
   'installed' => true,
-  'instanceid' => $instanceid_extracted,
+  'instanceid' => '$instanceid_extracted',
   'maintenance' => false,
   array (
     'host' => 'localhost',
