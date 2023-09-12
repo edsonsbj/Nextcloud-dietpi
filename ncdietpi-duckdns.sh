@@ -22,65 +22,88 @@ fi
 sudo mkdir -p ~/duckdns
 cd ~/duckdns
 
-# Request the DuckDNS domain from the user
-while true; do
-    # Prompt the user to enter the domain (without 'http', 'https', 'www', or 'http://')
-    echo -e -n "Please enter the domain (without 'http', 'https', 'www', or 'http://') for 'overwritehost' (e.g., example.com): "
-    read first_domain
-
-    # Remove blank/empty spaces
-    first_domain=$(echo "$first_domain" | tr -d '[:space:]')
-
-    # Verify domain format
-    if [[ ! "$first_domain" =~ ^[a-zA-Z0-9.-]+$ || "$first_domain" == *":"* ]]; then
-        echo  -e " [ ${BOLD_RED}!${RESET_COLOR} ] Invalid domain format or contains ':' symbol at the end. Please try again."
-    else
-        while true; do
-            # Prompt the user to enter the domain again for confirmation
-            echo -e -n "Please re-enter the domain to confirm: "
-            read second_domain
-
-            # Remove blank/empty spaces
-            second_domain=$(echo "$second_domain" | tr -d '[:space:]')
-
-            # Check if the second domain matches the first one
-            if [ "$second_domain" == "$first_domain" ]; then
-                break 2  # Exit both loops if the domains match
-            else
-                echo -e " [ ${BOLD_RED}!${RESET_COLOR} ] Domains do not match. Please try again."
-            fi
-        done
-    fi
-done
-
 # Request the DuckDNS token from the user
-echo "Enter your DuckDNS token:"
 while true; do
     echo "Enter your DuckDNS token:"
-    read -r duckdns_token
+    read -r first_token
 
-    if [[ -n "$duckdns_token" ]]; then
-        break
+    if [[ -n "$first_token" ]]; then
+        while true; do
+            # Prompt the user to enter the token again for confirmation
+            echo -e -n "Please re-enter the token to confirm: "
+            read -r second_token
+
+            # Check if the second token matches the first one
+            if [ "$second_token" == "$first_token" ]; then
+                break 2  # Exit both loops if the tokens match
+            else
+                echo " [ERROR] Tokens do not match. Please try again."
+            fi
+        done
     else
         echo " [ERROR] DuckDNS token cannot be empty. Please try again."
     fi
 done
 
+# Request the DuckDNS domain from the user
+while true; do
+    # Prompt the user to enter the domain (without '.duckdns.org')
+    echo -e -n "Enter your DuckDNS domain (e.g., mydomain): "
+    read -r domain
+
+    # Add '.duckdns.org' to the domain
+    first_domain="${domain}.duckdns.org"
+
+    # Verify domain format
+    while true; do
+        if [[ ! "$first_domain" =~ ^[a-zA-Z0-9.-]+\.duckdns\.org$ || "$first_domain" == *":"* ]]; then
+            echo  -e " [ERROR] Invalid domain format. Please enter only the domain part without '.duckdns.org'."
+            echo -e -n "Please re-enter the domain: "
+            read -r first_domain
+            first_domain="${first_domain}.duckdns.org"
+        else
+            break
+        fi
+    done
+
+    while true; do
+        # Prompt the user to enter the domain again for confirmation
+        echo -e -n "Please re-enter the domain to confirm: "
+        read -r second_domain
+
+        # Add '.duckdns.org' to the second_domain
+        second_domain="${second_domain}.duckdns.org"
+
+        # Remove blank/empty spaces
+        second_domain=$(echo "$second_domain" | tr -d '[:space:]')
+
+        # Check if the second domain matches the first one
+        if [ "$second_domain" == "$first_domain" ]; then
+            break 2  # Exit both loops if the domains match
+        else
+            echo -e " [ERROR] Domains do not match. Please try again."
+        fi
+    done
+done
+
 # Create the duck.sh file with user-inserted variables
-cat <<EOF > duck.sh
-!/bin/bash
+sudo tee duck.sh > /dev/null <<EOF
+#!/bin/bash
 
-echo url="https://www.duckdns.org/update?domains=$first_domain&token=$duckdns_token&ip=" | curl -k -o ~/duckdns/duck.log -K -
-
+# Replace 'exampledomain' with the DuckDNS domain entered by the user and '$first_token' with the entered token
+echo url="https://www.duckdns.org/update?domains=$first_domain&token=$first_token&ip=" | curl -k -o ~/duckdns/duck.log -K -
 EOF
 
 # Make the file executable
 sudo chmod 700 duck.sh
 
-# Add the cron task to run the script every 5 minutes
-sudo (crontab -l ; echo "*/5 * * * * ~/duckdns/duck.sh >/dev/null 2>&1") | crontab -
-
-# Test the script
-sudo ./duck.sh
+# Check if the cron job is already in crontab
+if sudo crontab -l | grep -q '*/5 * * * * ~/duckdns/duck.sh >/dev/null 2>&1'; then
+    echo "Cron job is already in crontab. Nothing to do."
+else
+    # Add the cron task to run the script every 5 minutes
+    echo "*/5 * * * * ~/duckdns/duck.sh >/dev/null 2>&1" | sudo crontab -
+    echo "Cron job added to crontab."
+fi
 
 echo "The DuckDNS script has been successfully configured. Be sure to review the settings in duck.sh and replace the token and domain as needed."
