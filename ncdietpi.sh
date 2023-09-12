@@ -300,8 +300,8 @@ while true; do
     if [ "$use_duckdns" == "N" ] || [ "$use_duckdns" == "n" ]; then
         break
     elif [ "$use_duckdns" == "Y" ] || [ "$use_duckdns" == "y" ]; then
-        # Execute the dietpi-duckdns.sh script
-        ./dietpi-duckdns.sh
+        # Execute the ncdietpi-duckdns.sh script
+        ./ncdietpi-duckdns.sh
         break
     else
         echo -e "Invalid input. Please enter 'Y' or 'N'."
