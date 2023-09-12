@@ -194,8 +194,6 @@ done
 
 ###################### STEP 6 ######################
 
-sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
-
 # Check if config.php was created before
 config_file='/var/www/nextcloud/config/config.php'
 custom_config_file='/var/www/nextcloud/config/custom.config.php'
@@ -293,7 +291,6 @@ sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
 echo -e "\n\n[ ${BOLD_YELLOW}!${RESET_COLOR} ]Change the password of Nextcloud Admin."
 sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 echo -e "PASSWORD CHANGE"
-sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --off
 ################## END OF STEP 7 ###################
 
 ###################### STEP 8 ######################
