@@ -282,6 +282,7 @@ while true; do
     fi
 done
 
+sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
 ################## END OF STEP 6 ###################
 
 ###################### STEP 7 ######################
