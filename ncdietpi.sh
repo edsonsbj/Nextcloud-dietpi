@@ -293,6 +293,17 @@ sudo -u www-data php /var/www/nextcloud/occ user:resetpassword admin
 echo -e "PASSWORD CHANGE"
 ################## END OF STEP 7 ###################
 
+echo -e "\n\n${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
+echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
+echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
+echo -e "Thank you for using this script!"
+echo -e "If you found it helpful, consider supporting the developer by buying a coffee using the link below:"
+echo -e "\n${LIGHT_GREEN}buymeacoffee.com/lstavares84${RESET_COLOR}"
+echo -e "\nYour contribution helps maintain this project and enables the creation of more useful features in the future."
+echo -e "Thank you for your support!"
+echo -e "${LIGHT_GREEN}──────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
+
+
 ###################### STEP 8 ######################
 unset BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE
 unset BOLD_BLACK BOLD_RED BOLD_GREEN BOLD_YELLOW BOLD_BLUE BOLD_MAGENTA BOLD_CYAN BOLD_WHITE
@@ -302,13 +313,3 @@ unset NEXTCLOUD_IP confirm CONF_FILE config_file config_file_bak
 unset passwordsalt_extracted secret_extracted dbpassword_extracted instanceid_extracted
 unset first_domain second_domain
 ################## END OF STEP 8 ###################
-
-echo -e "\n\n${BOLD_GREEN}INSTALLATION COMPLETED!${RESET_COLOR}"
-echo -e "LOG of this script can be found saved as ${YELLOW}nextcloud-dietpi.log${RESET_COLOR}"
-echo -e "${LIGHT_GREEN}───────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
-echo -e "Thank you for using this script!"
-echo -e "If you found it helpful, consider supporting the developer by buying a coffee using the link below:"
-echo -e "\n                        ${LIGHT_GREEN}buymeacoffee.com/lstavares84${RESET_COLOR}"
-echo -e "\nYour contribution helps maintain this project and enables the creation of more useful features in the future."
-echo -e "Thank you for your support!"
-echo -e "${LIGHT_GREEN}──────────────────────────────────────────────────────────────────────────────────────────────────${RESET_COLOR}"
