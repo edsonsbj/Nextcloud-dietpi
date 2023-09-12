@@ -272,6 +272,9 @@ cat <<EOF > "$custom_config_file"
 
 EOF
 
+sed -i "s/'overwrite.cli.url' => 'http:\/\/localhost\/nextcloud',/'overwrite.cli.url' => 'http:\/\/localhost\/',/" "$config_file"
+sed -i "s/'htaccess.RewriteBase' => '\/nextcloud',/'htaccess.RewriteBase' => '\/',/" "$config_file"
+
 while true; do
     echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay. Type 'CONTINUE' to proceed:"
     read user_input
