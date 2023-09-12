@@ -239,27 +239,6 @@ done
 # Now, both domains match and are stored in the 'first_domain' variable
 echo -e "[ ${BOLD_YELLOW}!${RESET_COLOR} ] You entered the domain: ${BOLD_GREEN}$first_domain${RESET_COLOR} "
 
-# Path to the config.php backup file
-config_file_bak='/var/www/nextcloud/config/config.php.bak'
-
-# Check if the config.php backup file exists
-if [ ! -f "$config_file_bak" ]; then
-    echo "Config.php backup file not found."
-    exit 1
-fi
-
-# Extract values from the config.php backup file
-passwordsalt_extracted=$(grep -oP "'passwordsalt' => '\K[^']+" "$config_file")
-secret_extracted=$(grep -oP "'secret' => '\K[^']+" "$config_file")
-dbpassword_extracted=$(grep -oP "'dbpassword' => '\K[^']+" "$config_file")
-instanceid_extracted=$(grep -oP "'instanceid' => '\K[^']+" "$config_file")
-
-# Display the extracted values
-echo "variável_1 = $passwordsalt_extracted"
-echo "variável_2 = $secret_extracted"
-echo "variável_3 = $dbpassword_extracted"
-echo "variável_4 = $instanceid_extracted"
-
 cat <<EOF > "$custom_config_file"
 <?php
 \$CONFIG = array (
@@ -287,17 +266,14 @@ cat <<EOF > "$custom_config_file"
   'force_language' => 'pt',
   'default_locale' => 'pt_BR',
   'force_locale' => 'pt_BR',
-  'overwritehost' => '$first_domain:8443',
+  'overwritehost' => '${first_domain}:8443',
   'overwriteprotocol' => 'https',
 );
 
 EOF
 
-chmod --reference=config.php custom_config.php #Copy permissions of config.php to custom_config.php
-chown --reference=config.php custom_config.php #Copy the properties and group of config.php to custom_config.php
-
 while true; do
-    echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay."
+    echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay. Type 'CONTINUE' to proceed:"
     read user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
@@ -305,9 +281,6 @@ while true; do
         echo -e "Invalid input. Please type 'CONTINUE' to proceed IF it's done."
     fi
 done
-
-
-
 
 ################## END OF STEP 6 ###################
 
