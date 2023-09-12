@@ -1,24 +1,22 @@
 <p align="center">
    <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85">
 </p>
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/cbfadd59-1ecd-4344-98e5-374600ff7826)
 
 
-# nextcloud
 
-Where some scripts used in Nextcloud can be found
+# NEXTCLOUD in DietPI for Native PC (Bios/CSM)
 
-## STEP 1: Flash Dietpi in a MicroSD CARD
-cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x *.sh && sudo ./ncdietpi.sh
+Scripts to automate the installation and configuration of Nextcloud on PCs (Not for BCM, Raspberry Pi, Orange, Rock, ect.)
+Written in partnership with @edsonsbj (https://github.com/edsonsbj). Thanks a lot, pal!
 
 # THIS SCRIPT WAS TESTED IN:
 	[ ] Raspberry Pi 4B+
 	[ ] Raspberry Pi 400
 	[X] PC Bios
-	[ ] External HDD/SSD
- 	[X] Internal Sata HDD/SSD
+	[X] Internal Sata HDD/SSD
  	[X] External USB HDD/SSD  
-	[ ] Flash USB (a.k.a Thumb Driver)
+	[ ] Live USB OS
+ 	[X] OS Installed in Internal HDD/SDD
 	[ ] NoIp Domain
 	[ ] Cloudflare Domain
 	[X] Duckdns Domain
@@ -27,38 +25,55 @@ cd / && sudo apt install git -y && git clone https://github.com/lstavares84/next
 	[ ] This script formats the external HDD/SDD or Flash USB
 	[X] This script DOES NOT formats the external HDD/SDD or Flash USB
 	[ ] This script formats the external HDD/SDD or Flash USB as EXT4
-	[ ] This script formats the external HDD/SDD or Flash USB as BTRFS
+	[ ] This script formats the external HDD/SDD or Flash USB
+ 
 
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/df0d7815-67f3-41f1-b35a-ab32307c683f)
+## STEP 1: Download DietPi Image
 
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/93afa86e-04e2-4ce7-9a22-0afddcfd0e37)
+🔗 https://dietpi.com/#download
 
-## STEP 2: Boot Raspberry Pi with Diet Pi flashed in MicroSD
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/4e22c134-3680-42ef-9241-be77649ab69e)
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/a51ab040-c842-4a0f-91a7-e61551eea576)
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/cc19bfee-f754-4d01-9c66-a699cad03e17)
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/697b969d-eb9c-4687-b6f1-39f59d536d44)
+
+## STEP 2: Flash Installer Image to USB Driver
+
+🔗 Download Rufus: https://rufus.ie/pt_BR/
+
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/a2fa06b5-142e-45c8-96c7-c0f0050819dc)
+
+## STEP 3: Boot and Install DietPi
+
+🔗 Procedure: https://dietpi.com/docs/install/
+![image](https://github.com/lstavares84/nextcloud/assets/61010791/0b173505-22d6-462d-884b-f5e7da18e301)
+
+## STEP 4: After Installation
+
+After the install OS the system will shutdown. Remove the flash usb, turn on PC again and follow the steps below.
+
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/772cfdb6-4803-456b-ac4b-f8533f02fccf)
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/66cb39da-50b2-44af-b9db-ebdc267ee89d)
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/c794f951-9ab5-464c-be0c-7151afed449a)
+
+⚠️ ⚠️ ⚠️  Do not install anything! Go direct to Install Option, press TAB to go to OK and press ENTER!
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/4e6fe183-3057-41dd-a71f-cbc2e4842e3d)
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/7209cf43-dfc3-4dd9-b0c5-16ed7e6c4d44)
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/a19bb6e2-415c-4410-a119-32cd8e95237a)
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/b33de81b-ae79-48c0-91dc-5a1d7d9a6e4b)
+
+⚠️ ⚠️ ⚠️  Everything is done when you see this screen.
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/2c0a3b3a-e0cd-49ad-a9e4-dc46c8439264)
 
+## STEP 5: Now, let's run the script that will install everything you need to run Nextcloud.
 
-cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x /nextcloud-dietpi.sh && sudo chmod +x nextcloud-dietpi-external-storage.sh && sudo ./nextcloud-dietpi.sh
+Copy and paste the command below in the screen above.  It can take a while. Be patience and wait for the screen below
 
+ 	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x *.sh && sudo ./ncdietpi.sh
 
-
-
+⚠️ ⚠️ ⚠️  If the screen below shows up, choose Apache. But if it don't shows up... relax and continue.
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/b65c5684-39d7-447b-8cef-3aa5f85f836d)
-
-It can take a while. Be patience and wait for the screen below
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/7439aab7-ba98-4423-b27d-b390c6839bf1)
 
-If eveything is OK, type CONTINUE. If NOK, flash a new image and start again.
+⚠️ ⚠️ ⚠️  If eveything is OK, type CONTINUE. If NOK, flash a new image and start again.
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/0f79b397-90de-4553-954e-de9466312870)
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/59a9b271-a0e3-43a7-8776-d0115b43200b)
