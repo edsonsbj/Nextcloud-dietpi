@@ -274,7 +274,7 @@ sed -i "s/'overwrite.cli.url' => 'http:\/\/localhost\/nextcloud',/'overwrite.cli
 sed -i "s/'htaccess.RewriteBase' => '\/nextcloud',/'htaccess.RewriteBase' => '\/',/" "$config_file"
 
 while true; do
-    echo -e "File ${YELLOW}$config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay. Type 'CONTINUE' to proceed:"
+    echo -e "File ${YELLOW}$custom_config_file${RESET_COLOR} has been changed. In another SSH Terminal window check if everything is okay. Type 'CONTINUE' to proceed:"
     read user_input
     if [ "$user_input" == "CONTINUE" ]; then
         break
