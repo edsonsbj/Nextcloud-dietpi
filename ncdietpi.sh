@@ -198,7 +198,7 @@ sudo -u www-data php /var/www/nextcloud/occ maintenance:mode --on
 
 # Check if config.php was created before
 config_file='/var/www/nextcloud/config/config.php'
-custom_config_file='/var/www/nextcloud/config/custom_config.php'
+custom_config_file='/var/www/nextcloud/config/custom.config.php'
 if [ ! -f "$config_file" ]; then
     echo -e " [ ${BOLD_RED}!${RESET_COLOR} ] File config.php not found ${YELLOW}$config_file{RESET_COLOR}."
     exit 1
@@ -263,60 +263,32 @@ echo "variável_4 = $instanceid_extracted"
 cat <<EOF > "$custom_config_file"
 <?php
 \$CONFIG = array (
-    'passwordsalt' => '$passwordsalt_extracted',
-    'secret' => '$secret_extracted',
-    'trusted_domains' =>
-    array (
-        0 => 'localhost',
-        1 => '$NEXTCLOUD_IP',
-        ),
-    'overwritehost' => '$first_domain',
-    'overwriteprotocol' => 'https',
-    'datadirectory' => '/mnt/dietpi_userdata/nextcloud_data',
-    'dbtype' => 'mysql',
-    'version' => '27.0.2.1',
-    'hashingThreads' => 4,
-    'memcache.local' => '\\OC\\Memcache\\APCu',
-    'filelocking.enabled' => true,
-    'memcache.locking' => '\\OC\\Memcache\\Redis',
-    'redis' =>
-        array (
-            'host' => '/run/redis/redis-server.sock',
-            'port' => 0,
-            ),
-    'overwrite.cli.url' => 'http://localhost/nextcloud',
-    'dbname' => '/nextcloud',
-    'dbhost' => 'localhost',
-    'dbport' => '',
-    'dbtableprefix' => 'oc_',
-    'mysql.utf8mb4' => true,
-    'dbuser' => 'oc_admin',
-    'dbpassword' => '$dbpassword_extracted',
-    'installed' => true,
-    'instanceid' => '$instanceid_extracted',
-    'maintenance' => true,
-    array (
-        'host' => 'localhost',
-        'port' => 6379,
-        ),
-    'enabledPreviewProviders' =>
-    array (
-        0 => 'OC\\Preview\\PNG',
-        1 => 'OC\\Preview\\JPEG',
-        2 => 'OC\\Preview\\GIF',
-        3 => 'OC\\Preview\\BMP',
-        4 => 'OC\\Preview\\XBitmap',
-        5 => 'OC\\Preview\\Movie',
-        6 => 'OC\\Preview\\PDF',
-        7 => 'OC\\Preview\\MP3',
-        8 => 'OC\\Preview\\TXT',
-        9 => 'OC\\Preview\\MarkDown',
-        10 => 'OC\\Preview\\Image',
-        11 => 'OC\\Preview\\HEIC',
-        12 => 'OC\\Preview\\TIFF',
-        ),
-    'trashbin_retention_obligation' => 'auto,30',
-    'versions_retention_obligation' => 'auto,30',
+  'default_phone_region' => 'BR',
+  'skeletondirectory' => '',
+  'enabledPreviewProviders' =>
+  array (
+    0 => 'OC\\Preview\\PNG',
+    1 => 'OC\\Preview\\JPEG',
+    2 => 'OC\\Preview\\GIF',
+    3 => 'OC\\Preview\\BMP',
+    4 => 'OC\\Preview\\XBitmap',
+    5 => 'OC\\Preview\\Movie',
+    6 => 'OC\\Preview\\PDF',
+    7 => 'OC\\Preview\\MP3',
+    8 => 'OC\\Preview\\TXT',
+    9 => 'OC\\Preview\\MarkDown',
+    10 => 'OC\\Preview\\Image',
+    11 => 'OC\\Preview\\HEIC',
+    12 => 'OC\\Preview\\TIFF',
+  ),
+  'trashbin_retention_obligation' => 'auto,30',
+  'versions_retention_obligation' => 'auto,30',
+  'default_language' => 'pt',
+  'force_language' => 'pt',
+  'default_locale' => 'pt_BR',
+  'force_locale' => 'pt_BR',
+  'overwritehost' => '$first_domain:8443',
+  'overwriteprotocol' => 'https',
 );
 
 EOF
