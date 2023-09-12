@@ -31,19 +31,26 @@ Written in partnership with @edsonsbj (https://github.com/edsonsbj). Thanks a lo
 ## STEP 1: Download DietPi Image
 
 🔗 https://dietpi.com/#download
-
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/697b969d-eb9c-4687-b6f1-39f59d536d44)
+<p align="center">
+<img src="https://github.com/lstavares84/nextcloud/assets/61010791/697b969d-eb9c-4687-b6f1-39f59d536d44"/>
+</p>
 
 ## STEP 2: Flash Installer Image to USB Driver
 
 🔗 Download Rufus: https://rufus.ie/pt_BR/
 
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/a2fa06b5-142e-45c8-96c7-c0f0050819dc)
+<p align="center">
+<img src="https://github.com/lstavares84/nextcloud/assets/61010791/a2fa06b5-142e-45c8-96c7-c0f0050819dc"/>
+</p>
 
 ## STEP 3: Boot and Install DietPi
 
 🔗 Procedure: https://dietpi.com/docs/install/
-![image](https://github.com/lstavares84/nextcloud/assets/61010791/0b173505-22d6-462d-884b-f5e7da18e301)
+
+<p align="center">
+<img src="https://github.com/lstavares84/nextcloud/assets/61010791/0b173505-22d6-462d-884b-f5e7da18e301"/>
+</p>
+
 
 ## STEP 4: After Installation
 
@@ -68,7 +75,7 @@ Copy and paste the command below in the screen above.  It can take a while. Be p
 
  	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x *.sh && sudo ./ncdietpi.sh
 
-⚠️ ⚠️ ⚠️  If the screen below shows up, choose Apache. But if it don't shows up... relax and continue.
+⚠️ ⚠️ ⚠️  If... BIG IF here... the screen below shows up, choose Apache. But if it don't shows up... relax and continue.
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/b65c5684-39d7-447b-8cef-3aa5f85f836d)
 
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/7439aab7-ba98-4423-b27d-b390c6839bf1)
