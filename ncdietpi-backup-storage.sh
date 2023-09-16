@@ -38,7 +38,6 @@ if [ ! -d "/media/myCloudBackup" ]; then
     sudo mkdir /media/myCloudBackup  # Criar o diretório se não existir
 fi
 
-# 5) Copiar example.conf e renomear conforme necessário
 # 5) Criar o arquivo example.conf com as configurações padrão
 echo "5) Criando o arquivo example.conf..."
 
