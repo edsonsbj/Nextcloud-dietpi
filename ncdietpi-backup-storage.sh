@@ -39,9 +39,38 @@ if [ ! -d "/media/myCloudBackup" ]; then
 fi
 
 # 5) Copiar example.conf e renomear conforme necessário
-echo -n "5) Digite o nome do arquivo de configuração (exemplo: meu_backup.conf): "
-read conf_file
-cp example.conf "$conf_file"  # Copiar example.conf para o novo arquivo
+# 5) Criar o arquivo example.conf com as configurações padrão
+echo "5) Criando o arquivo example.conf..."
+
+cat <<EOF > example.conf
+
+# External HD Path (check "fdisk -l")
+DEVICE="/dev/sxx"
+
+# Mount Point of the external HD 
+MOUNTDIR="/media/myCloudBackup"
+
+# Setting this, so that the repository does not need to be provided on the command line:
+export BORG_REPO="/path/to/folder/Repo"
+
+# Setting this, so that the password is not provided on the command line 
+export BORG_PASSPHRASE='Senhasegura'
+
+# Backup Date
+ARCHIVE_DATE=\$1
+
+# FILE RESTORE  
+FILE_TO_RESTORE=\$2
+
+# Include specific folders and files to backup 
+PATTERNS='/path/to/patterns.lst'
+
+# Log Files 
+LOGFILE_PATH='/var/log/backup-\$(date +%Y-%m-%d_%H-%M).txt'
+EOF
+
+echo "Arquivo example.conf criado com sucesso."
+
 
 # 6) Adicionar as pastas a serem backup no arquivo patterns.lst
 echo "6) Agora, vamos configurar as pastas a serem incluídas no backup."
