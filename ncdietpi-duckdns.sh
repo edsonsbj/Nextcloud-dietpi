@@ -48,7 +48,7 @@ done
 # Request the DuckDNS domain from the user
 while true; do
     # Prompt the user to enter the domain (without '.duckdns.org')
-    echo -e -n "Enter your DuckDNS domain (e.g., mydomain): "
+    echo -e -n "Enter your DuckDNS domain ([${BOLD_YELLOW}!${RESET_COLOR}] do not need to type ".duckdns.org", just the domain): "
     read -r domain
 
     # Add '.duckdns.org' to the domain
