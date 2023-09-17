@@ -301,7 +301,8 @@ while true; do
         break
     elif [ "$use_duckdns" == "Y" ] || [ "$use_duckdns" == "y" ]; then
         # Execute the ncdietpi-duckdns.sh script
-        ./ncdietpi-duckdns.sh
+        cd /
+        sudo ./ncdietpi-duckdns.sh
         break
     else
         echo -e "Invalid input. Please enter 'Y' or 'N'."
