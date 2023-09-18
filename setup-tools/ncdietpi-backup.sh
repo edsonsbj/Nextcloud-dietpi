@@ -1,5 +1,6 @@
 #!/bin/bash
 
+###################### FOREPLAY ######################
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
     echo "This script must be executed in the root directory of the system."
@@ -84,7 +85,9 @@ sudo mount "/dev/$backup_name" $BACKUPDIR
 
 # Remova o arquivo temporário
 rm lsblk_output.txt
+################### END OF FOREPLAY ##################
 
+###################### BACKUP ROUTINE ######################
 # Crie o arquivo "backup.sh" usando cat << EOF
 cat << EOF > /root/ncp-backup/ncp-backup-routine.sh
 #!/usr/bin/env bash
@@ -150,6 +153,9 @@ main () {
 main
 # ------------------------------------------------------------------------ #
 EOF
+################### END OF BACKUP ROUTINE ###################
+
+
 
 ###################### ncp-backup-configs ######################
 # Consulte o arquivo config.php do Nextcloud para obter o valor de datadirectory
