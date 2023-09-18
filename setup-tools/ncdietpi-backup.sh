@@ -3,7 +3,8 @@
 
 # Execute lsblk com as colunas desejadas e capture a saída em um arquivo temporário
 lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID
-lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID > lsblk_output.txt
+lsblk -o NAME,UUID,PTUUID,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT | grep -E '[0-9]$' > lsblk_output.txt
+
 
 # Exiba as opções para o usuário
 echo -e "\nEscolha o NAME do HDD de backup:"
