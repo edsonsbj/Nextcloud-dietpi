@@ -13,11 +13,12 @@ options=()
 
 # Leia o arquivo temporário e processe as linhas
 while IFS= read -r line; do
-    name=$(echo "$line" | awk '{print $1}' | sed 's/└─//g' | sed 's/─//g')
+    name=$(echo "$line" | awk '{print $1}' | sed -e 's/└─//g' -e 's/─//g' -e 's/├//g')
     options+=("$name")
     index=$((index + 1))
     echo -e "   $index) $name"
 done < lsblk_output.txt
+
 
 
 # Peça ao usuário para digitar o número correspondente à escolha do HDD de backup
@@ -49,6 +50,7 @@ if [ "$fs_type" != "ext4" ]; then
         echo "Formatando a partição $backup_name como ext4..."
         # Formate a partição como ext4
         sudo mkfs.ext4 "/dev/$backup_name"
+        sudo lsblk -o NAME,SIZE,FSTYPE,TYPE
     else
         echo "Operação cancelada. Saindo."
         exit 1
