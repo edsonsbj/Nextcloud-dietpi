@@ -2,7 +2,10 @@
    <img src="https://dietpi.com/images/dietpi-logo_240x80.png" width="240" height="80"> <img src="https://nextcloud.com/wp-content/uploads/2022/11/nextcloud-logo.svg" width="120" height="85">
 </p>
 
+#FAST PATH
+For those of you who are already familiar with this repository. 
 
+ 	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && rm nextcloud/README.md && sudo mv nextcloud/*.* / && sudo chmod +x *.sh && sudo chmod +x /setup-tools/*.sh && sudo ./ncdietpi.sh
 
 # NEXTCLOUD in DietPI for Native PC (Bios/CSM)
 
