@@ -29,8 +29,6 @@ while IFS= read -r line; do
     echo -e "   $index) $name"
 done < lsblk_output.txt
 
-
-
 # Peça ao usuário para digitar o número correspondente à escolha do HDD de backup
 echo -n "Digite o número correspondente (1, 2, 3, ...) do HDD de backup: "
 read choice
@@ -67,21 +65,133 @@ if [ "$fs_type" != "ext4" ]; then
     fi
 fi
 
-# Verifique se o Git está instalado
-if command -v git &> /dev/null; then
-    echo "O Git já está instalado."
-else
-    echo "O Git não está instalado. Instalando..."
+# Verifique se o Git está instalado e instale-o, se necessário
+if ! command -v git &> /dev/null; then
+    echo "3) Git não está instalado. Instalando..."
     sudo apt install git -y  # Instalar Git se não estiver instalado
 fi
 
-# Verifique se a pasta /media/myCloudBackup já está criada
-if [ -d "/media/myCloudBackup" ]; then
-    echo "A pasta /media/myCloudBackup já está criada."
-else
-    echo "Criando a pasta /media/myCloudBackup..."
+# Crie o diretório /media/myCloudBackup para montar o HD secundário
+if [ ! -d "/media/myCloudBackup" ]; then
+    echo "4) Criando o diretório /media/myCloudBackup..."
     sudo mkdir /media/myCloudBackup  # Criar o diretório se não existir
 fi
 
 # Remova o arquivo temporário
 rm lsblk_output.txt
+
+# ------------------ Novas etapas ------------------
+
+# Crie o diretório /root/ncp-backup/ se não existir
+if [ ! -d "/root/ncp-backup/" ]; then
+    echo "Criando o diretório /root/ncp-backup/..."
+    sudo mkdir -p /root/ncp-backup/
+fi
+
+# Crie o arquivo "backup.sh" usando cat << EOF
+cat << EOF > /root/ncp-backup/backup.sh
+#!/usr/bin/env bash
+# Script Simples para a realização de backup e restauração de pastas e arquivos usando Rsync em HD Externo
+
+# Adicione aqui o caminho para o Arquivo Configs
+CONFIG="/Path/to/Nextcloud-Backup-Restore/Configs"
+
+. \${CONFIG}
+
+# NÃO ALTERE
+MOUNT_FILE="/proc/mounts"
+NULL_DEVICE="1> /dev/null 2>&1"
+REDIRECT_LOG_FILE="1>> \$LOGFILE_PATH 2>&1"
+# ------------------------------------------------------------------------ #
+# -------------------------------TESTS----------------------------------------- #
+# Script Executado como root?
+[ "\$UID" != "0" ] && {
+  echo "---------- You must be root ----------" >> \$LOGFILE_PATH
+  exit 1
+}
+
+# O Dispositivo está Montado?
+grep -q "\$DEVICE" "\$MOUNT_FILE"
+if [ "\$?" != "0" ]; then
+  # Se não, monte em \$DESTINATIONDIR
+  echo "---------- Dispositivo não montado. Monte \$DEVICE ----------" >> \$LOGFILE_PATH
+  eval mount -t auto "\$DEVICE" "\$DESTINATIONDIR" "\$NULL_DEVICE"
+else
+  # Se sim, grep o ponto de montagem e altere o \$DESTINATIONDIR
+  DESTINATIONDIR=\$(grep "\$DEVICE" "\$MOUNT_FILE" | cut -d " " -f 2)
+fi
+
+cd "/"
+
+# Há permissões de excrita e gravação?
+[ ! -w "\$DESTINATIONDIR" ] && {
+  echo "---------- Não tem permissões de gravação ----------" >> \$LOGFILE_PATH
+  exit 1
+}
+## ------------------------------------------------------------------------ #
+
+  echo "---------- Iniciando Backup. ----------" >> \$LOGFILE_PATH
+
+# -------------------------------FUNCTIONS----------------------------------------- #
+backup() {
+sudo rsync -avh --delete --progress "\$DIR01" "\$DESTINATIONDIR" --files-from "\$INCLIST" 1>> \$LOGFILE_PATH
+
+  # Funcionou bem? Remova a Midia Externa.
+  [ "\$?" = "0" ] && {
+    echo "---------- Backup Finalizado. Desmonte a Unidade \$DEVICE ----------" >> \$LOGFILE_PATH
+ 	eval umount "\$DEVICE" "\$NULL_DEVICE"
+	eval sudo udisksctl power-off -b "\${DEVICE}" >>\$LOGFILE_PATH
+    exit 0
+  }
+}
+
+preparelogfile () {
+  # Insira um cabeçalho simples no arquivo de log com o carimbo de data/hora
+  echo "----------[ \$(date) ]----------" >> \$LOGFILE_PATH
+}
+
+main () {
+  preparelogfile
+  backup
+}
+# ------------------------------------------------------------------------ #
+
+# -------------------------------EXECUTION----------------------------------------- #
+main
+# ------------------------------------------------------------------------ #
+EOF
+
+# Crie o arquivo "ncp-backup-configs" usando cat << EOF
+cat << EOF > /root/ncp-backup/ncp-backup-configs
+#!/bin/bash
+
+# Pastas para Backup e Restauração 
+DIR01="/path/to/Imagens"
+
+# Ponto de Montagem do HD externo 
+DESTINATIONDIR="/path/to/mount/external-hard-drive"
+
+# Caminho do Hd Externo (checar "fdisk -l")
+DEVICE="/dev/sxx"
+
+# Lista de inclusao
+INCLIST="/path/to/Rsync/include-lst" 
+
+# Arquivo de Log		
+LOGFILE_PATH="/path/to/Backup-\$(date +%Y-%m-%d_%H-%M).txt"
+EOF
+
+# Crie o arquivo "include.lst" usando cat << EOF
+cat << EOF > /root/ncp-backup/include.lst
+path/to/Documento/Abril
+path/to/Imagens/Ferias
+EOF
+
+# Torne os scripts executáveis
+chmod a+x /root/ncp-backup/backup.sh
+chmod a+x /root/ncp-backup/ncp-backup-configs
+
+echo "Arquivos de configuração e scripts criados com sucesso."
+
+# ------------------ Fim das novas etapas ------------------
+
