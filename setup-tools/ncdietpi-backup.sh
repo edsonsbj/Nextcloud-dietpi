@@ -101,10 +101,14 @@ rm lsblk_output.txt
 
 
 
-######################################################## BACKUP ROUTINE ########################################################
+######################################################## [!] CREATING BACKUP ROUTINE ########################################################
 # Crie o arquivo "backup.sh" usando cat << EOF
 cat << EOF > /root/ncp-backup/ncp-backup-routine.sh
 #!/usr/bin/env bash
+
+
+
+######################################################## HEADER ########################################################
 # Script Simples para a realização de backup e restauração de pastas e arquivos usando Rsync em HD Externo
 
 # Adicione aqui o caminho para o Arquivo Configs
@@ -116,6 +120,9 @@ CONFIG="$BACKUPDIR"
 MOUNT_FILE="/proc/mounts"
 NULL_DEVICE="1> /dev/null 2>&1"
 REDIRECT_LOG_FILE="1>> \$LOGFILE_PATH 2>&1"
+##################################################### END OF HEADER ####################################################
+
+
 
 ######################################################## BACKUP ROUTINE CHECKIN ########################################################
 # O Dispositivo está Montado?
@@ -139,6 +146,8 @@ cd "/"
 
   echo "[!]  Iniciando Backup..." >> \$LOGFILE_PATH
 ##################################################### END OF BACKUP ROUTINE CHECKIN ####################################################
+
+
 
 ######################################################## BACKUP FUNCTIONS ########################################################
 backup() {
@@ -165,9 +174,10 @@ main () {
 ##################################################### END OF BACKUP FUNCTIONS ####################################################
 
 
+
 main
 EOF
-######################################################## END OF BACKUP ROUTINE ########################################################
+################################################## [!] END OF CREATING BACKUP ROUTINE #################################################
 
 
 
