@@ -40,6 +40,16 @@ RESET_COLOR='\033[0m'  # Restaura as configurações de cores para o padrão.
 
 
 ###################### STEP 0 ######################
+# Check if the user is in the Linux root directory
+if [ "$PWD" != "/" ]; then
+    echo "This script must be executed in the root directory of the system."
+    exit 1
+fi
+echo "Changing to the root directory..."
+cd /
+echo "pwd is $(pwd)"
+echo "location of the database backup file is " '/'
+
 exec > >(tee -i nextcloud-dietpi.log)
 exec 2>&1
 
