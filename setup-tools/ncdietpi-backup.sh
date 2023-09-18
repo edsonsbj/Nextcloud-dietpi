@@ -11,60 +11,80 @@ cd /
 echo "pwd is $(pwd)"
 echo "location of the database backup file is " '/'
 
-# Execute lsblk com as colunas desejadas e capture a saída em um arquivo temporário
-lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID
-lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID | awk 'NR > 1 && $1 ~ /[0-9]+$/ { print $0 }' > lsblk_output.txt
+# Função para verificar se a partição é ext4
+check_ext4_partition() {
+    local partition="$1"
+    local fs_type=$(lsblk -o FSTYPE -n "/dev/$partition")
+    [ "$fs_type" == "ext4" ]
+}
 
-# Exiba as opções para o usuário
-echo -e "\nEscolha o NAME do HDD de backup:"
+# Loop para permitir que o usuário escolha novamente se a partição não for ext4
+while true; do
+    # Execute lsblk com as colunas desejadas e capture a saída em um arquivo temporário
+    lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID
+    lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID | awk 'NR > 1 && $1 ~ /[0-9]+$/ { print $0 }' > lsblk_output.txt
 
-# Use um contador para gerar as opções (a, b, c, ...)
-index=0
-options=()
+    # Exiba as opções para o usuário
+    echo -e "\nEscolha o NAME do HDD de backup:"
 
-# Leia o arquivo temporário e processe as linhas
-while IFS= read -r line; do
-    name=$(echo "$line" | awk '{print $1}' | sed -e 's/└─//g' -e 's/─//g' -e 's/├//g')
-    options+=("$name")
-    index=$((index + 1))
-    echo -e "   $index) $name"
-done < lsblk_output.txt
+    # Use um contador para gerar as opções (a, b, c, ...)
+    index=0
+    options=()
 
-# Peça ao usuário para digitar o número correspondente à escolha do HDD de backup
-echo -n "Digite o número correspondente (1, 2, 3, ...) do HDD de backup: "
-read choice
+    # Leia o arquivo temporário e processe as linhas
+    while IFS= read -r line; do
+        name=$(echo "$line" | awk '{print $1}' | sed -e 's/└─//g' -e 's/─//g' -e 's/├//g')
+        options+=("$name")
+        index=$((index + 1))
+        echo -e "   $index) $name"
+    done < lsblk_output.txt
 
-# Verifique se a entrada do usuário é válida
-if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -le 0 ] || [ "$choice" -gt "$index" ]; then
-    echo "Opção inválida. Saindo."
-    exit 1
-fi
+    # Peça ao usuário para digitar o número correspondente à escolha do HDD de backup
+    echo -n "Digite o número correspondente (1, 2, 3, ...) do HDD de backup: "
+    read choice
 
-# Obtenha o NAME correspondente com base na escolha do usuário
-backup_name="${options[$choice - 1]}"
-
-# Verifique o sistema de arquivos da partição escolhida
-fs_type=$(lsblk -o FSTYPE -n /dev/$backup_name)
-
-if [ "$fs_type" != "ext4" ]; then
-    echo "A partição $backup_name não está formatada como ext4."
-    echo -n "Deseja formatar a partição como ext4 (s/n)? "
-    read format_option
-    if [ "$format_option" == "s" ]; then
-        # Desmonte a partição se estiver montada
-        if grep -qs "/dev/$backup_name" /proc/mounts; then
-            sudo umount "/dev/$backup_name"
-        fi
-
-        echo "Formatando a partição $backup_name como ext4..."
-        # Formate a partição como ext4
-        sudo mkfs.ext4 "/dev/$backup_name"
-        sudo lsblk -o NAME,SIZE,FSTYPE,TYPE
-    else
-        echo "Operação cancelada. Saindo."
+    # Verifique se a entrada do usuário é válida
+    if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -le 0 ] || [ "$choice" -gt "$index" ]; then
+        echo "Opção inválida. Saindo."
         exit 1
     fi
-fi
+
+    # Obtenha o NAME correspondente com base na escolha do usuário
+    backup_name="${options[$choice - 1]}"
+
+    # Verifique o sistema de arquivos da partição escolhida
+    fs_type=$(lsblk -o FSTYPE -n "/dev/$backup_name")
+
+    if [ "$fs_type" != "ext4" ]; then
+        echo "A partição $backup_name não está formatada como ext4."
+        echo -n "Deseja formatar a partição como ext4 (s/n)? "
+        read format_option
+        if [ "$format_option" == "s" ]; then
+            # Desmonte a partição se estiver montada
+            if grep -qs "/dev/$backup_name" /proc/mounts; then
+                sudo umount "/dev/$backup_name"
+            fi
+
+            echo "Formatando a partição $backup_name como ext4..."
+            # Formate a partição como ext4
+            sudo mkfs.ext4 "/dev/$backup_name"
+            sudo lsblk -o NAME,SIZE,FSTYPE,TYPE
+
+            # Verifique se a partição foi formatada com sucesso como ext4
+            if check_ext4_partition "$backup_name"; then
+                echo "Partição formatada com sucesso como ext4."
+                break  # Saia do loop, a partição agora é ext4
+            else
+                echo "Falha na formatação da partição. Tente novamente."
+            fi
+        else
+            echo "Operação cancelada. Saindo."
+            exit 1
+        fi
+    else
+        break  # A partição já é ext4
+    fi
+done
 
 # Verifique se o Git está instalado e instale-o, se necessário
 if ! command -v git &> /dev/null; then
