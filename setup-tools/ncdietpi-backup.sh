@@ -1,6 +1,6 @@
 #!/bin/bash
 
-###################### FOREPLAY ######################
+######################################################## FOREPLAY ########################################################
 # Check if the user is in the Linux root directory
 if [ "$PWD" != "/" ]; then
     echo "This script must be executed in the root directory of the system."
@@ -85,9 +85,23 @@ sudo mount "/dev/$backup_name" $BACKUPDIR
 
 # Remova o arquivo temporário
 rm lsblk_output.txt
-################### END OF FOREPLAY ##################
+######################################################## END OF FOREPLAY ########################################################
 
-###################### BACKUP ROUTINE ######################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################################################## BACKUP ROUTINE ########################################################
 # Crie o arquivo "backup.sh" usando cat << EOF
 cat << EOF > /root/ncp-backup/ncp-backup-routine.sh
 #!/usr/bin/env bash
@@ -153,11 +167,23 @@ main () {
 main
 # ------------------------------------------------------------------------ #
 EOF
-################### END OF BACKUP ROUTINE ###################
+######################################################## END OF BACKUP ROUTINE ########################################################
 
 
 
-###################### ncp-backup-configs ######################
+
+
+
+
+
+
+
+
+
+
+
+
+######################################################## ncp-backup-configs ########################################################
 # Consulte o arquivo config.php do Nextcloud para obter o valor de datadirectory
 config_file="/var/www/nextcloud/config/config.php"
 datadirectory=$(grep -oP "(?<='datadirectory' => ')(.*)(?=')" "$config_file")
@@ -184,16 +210,42 @@ INCLIST="/root/ncp-backup/include.lst"
 # Arquivo de Log		
 LOGFILE_PATH="$BACKUPDIR/Backup-$(date +%Y-%m-%d_%H-%M).log"
 EOF
-################### END OF ncp-backup-configs ##################
+######################################################## END OF ncp-backup-configs ########################################################
 
 
-###################### include.lst ######################
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################################################## include.lst ########################################################
 # Crie o arquivo "include.lst" usando cat << EOF
 cat << EOF > /root/ncp-backup/include.lst
 path/to/Documento/Abril
 path/to/Imagens/Ferias
 EOF
-################### END OF include.lst ##################
+######################################################## END OF include.lst ########################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Torne os scripts executáveis
