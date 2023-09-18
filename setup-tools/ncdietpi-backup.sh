@@ -196,7 +196,13 @@ EOF
 ######################################################## ncp-backup-configs ########################################################
 # Consulte o arquivo config.php do Nextcloud para obter o valor de datadirectory
 config_file="/var/www/nextcloud/config/config.php"
-datadirectory=$(grep -oP "(?<='datadirectory' => ')(.*)(?=')" "$config_file")
+
+if [ -f "$config_file" ]; then
+    datadirectory=$(grep -oP "(?<='datadirectory' => ')(.*)(?=')" "$config_file")
+else
+    echo "Arquivo de configuração não encontrado em $config_file."
+    exit 1
+fi
 
 # Crie o arquivo de log em $BACKUPDIR
 LOGFILE_PATH="$BACKUPDIR/Backup-$(date +%Y-%m-%d_%H-%M).txt"
@@ -262,7 +268,10 @@ EOF
 chmod a+x /root/ncp-backup/backup.sh
 chmod a+x /root/ncp-backup/ncp-backup-configs
 
+echo "Executando o backup..."
+sudo /root/ncp-backup/backup.sh
+
+echo "Agendando o backup no Cron para rodar às 4 da manhã..."
+(crontab -l 2>/dev/null; echo "0 4 * * * /root/ncp-backup/backup.sh") | crontab -
+
 echo "Instalação e configuração da rotina de backup do seu Nextcloud realizada com sucesso!"
-
-
-
