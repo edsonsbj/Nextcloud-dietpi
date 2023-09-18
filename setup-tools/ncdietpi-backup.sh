@@ -1,10 +1,8 @@
 #!/bin/bash
 
-
 # Execute lsblk com as colunas desejadas e capture a saída em um arquivo temporário
 lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID
-lsblk -o NAME,UUID,PTUUID,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT | grep -E '[0-9]$' > lsblk_output.txt
-
+lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID | awk 'NR > 1 && $1 ~ /[0-9]+$/ { print $0 }' > lsblk_output.txt
 
 # Exiba as opções para o usuário
 echo -e "\nEscolha o NAME do HDD de backup:"
@@ -15,12 +13,10 @@ options=()
 
 # Leia o arquivo temporário e processe as linhas
 while IFS= read -r line; do
-    if [ "$line" != "NAME   UUID                                   PTUUID                                 SIZE RO TYPE MOUNTPOINT" ]; then
-        name=$(echo "$line" | awk '{print $1}')
-        options+=("$name")
-        index=$((index + 1))
-        echo -e "   $index) $name"
-    fi
+    name=$(echo "$line" | awk '{print $1}')
+    options+=("$name")
+    index=$((index + 1))
+    echo -e "   $index) $name"
 done < lsblk_output.txt
 
 # Peça ao usuário para digitar o número correspondente à escolha do HDD de backup
