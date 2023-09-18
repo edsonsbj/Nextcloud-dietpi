@@ -77,24 +77,20 @@ if [ ! -d "/media/myCloudBackup" ]; then
     sudo mkdir /media/myCloudBackup  # Criar o diretório se não existir
 fi
 
+# Monte a partição escolhida na pasta /media/myCloudBackup
+echo "Montando /dev/$backup_name em /media/myCloudBackup/ ..."
+sudo mount "/dev/$backup_name" /media/myCloudBackup
+
 # Remova o arquivo temporário
 rm lsblk_output.txt
 
-# ------------------ Novas etapas ------------------
-
-# Crie o diretório /root/ncp-backup/ se não existir
-if [ ! -d "/root/ncp-backup/" ]; then
-    echo "Criando o diretório /root/ncp-backup/..."
-    sudo mkdir -p /root/ncp-backup/
-fi
-
 # Crie o arquivo "backup.sh" usando cat << EOF
-cat << EOF > /root/ncp-backup/backup.sh
+cat << EOF > /root/ncp-backup/ncp-backup-routine.sh
 #!/usr/bin/env bash
 # Script Simples para a realização de backup e restauração de pastas e arquivos usando Rsync em HD Externo
 
 # Adicione aqui o caminho para o Arquivo Configs
-CONFIG="/Path/to/Nextcloud-Backup-Restore/Configs"
+CONFIG="/media/myCloudBackup"
 
 . \${CONFIG}
 
@@ -102,13 +98,6 @@ CONFIG="/Path/to/Nextcloud-Backup-Restore/Configs"
 MOUNT_FILE="/proc/mounts"
 NULL_DEVICE="1> /dev/null 2>&1"
 REDIRECT_LOG_FILE="1>> \$LOGFILE_PATH 2>&1"
-# ------------------------------------------------------------------------ #
-# -------------------------------TESTS----------------------------------------- #
-# Script Executado como root?
-[ "\$UID" != "0" ] && {
-  echo "---------- You must be root ----------" >> \$LOGFILE_PATH
-  exit 1
-}
 
 # O Dispositivo está Montado?
 grep -q "\$DEVICE" "\$MOUNT_FILE"
