@@ -71,15 +71,16 @@ if ! command -v git &> /dev/null; then
     sudo apt install git -y  # Instalar Git se não estiver instalado
 fi
 
-# Crie o diretório /media/myCloudBackup para montar o HD secundário
-if [ ! -d "/media/myCloudBackup" ]; then
-    echo "4) Criando o diretório /media/myCloudBackup..."
-    sudo mkdir /media/myCloudBackup  # Criar o diretório se não existir
+# Crie o diretório $BACKUPDIR para montar o HD secundário
+BACKUPDIR="/media/myCloudBackup"
+if [ ! -d "$BACKUPDIR" ]; then
+    echo "4) Criando o diretório $BACKUPDIR..."
+    sudo mkdir $BACKUPDIR  # Criar o diretório se não existir
 fi
 
-# Monte a partição escolhida na pasta /media/myCloudBackup
-echo "Montando /dev/$backup_name em /media/myCloudBackup/ ..."
-sudo mount "/dev/$backup_name" /media/myCloudBackup
+# Monte a partição escolhida na pasta $BACKUPDIR
+echo "Montando /dev/$backup_name em $BACKUPDIR/ ..."
+sudo mount "/dev/$backup_name" $BACKUPDIR
 
 # Remova o arquivo temporário
 rm lsblk_output.txt
@@ -90,7 +91,7 @@ cat << EOF > /root/ncp-backup/ncp-backup-routine.sh
 # Script Simples para a realização de backup e restauração de pastas e arquivos usando Rsync em HD Externo
 
 # Adicione aqui o caminho para o Arquivo Configs
-CONFIG="/media/myCloudBackup"
+CONFIG="$BACKUPDIR"
 
 . \${CONFIG}
 
@@ -150,17 +151,13 @@ main
 # ------------------------------------------------------------------------ #
 EOF
 
+###################### ncp-backup-configs ######################
 # Consulte o arquivo config.php do Nextcloud para obter o valor de datadirectory
 config_file="/var/www/nextcloud/config/config.php"
 datadirectory=$(grep -oP "(?<='datadirectory' => ')(.*)(?=')" "$config_file")
 
-# Configure DESTINATIONDIR, DEVICE e INCLIST
-DESTINATIONDIR="/media/myCloud/Backup"
-DEVICE="/dev/$backup_name"
-INCLIST="/root/ncp-backup/include.lst"
-
-# Crie o arquivo de log em /media/myCloudBackup
-LOGFILE_PATH="/media/myCloudBackup/Backup-$(date +%Y-%m-%d_%H-%M).txt"
+# Crie o arquivo de log em $BACKUPDIR
+LOGFILE_PATH="$BACKUPDIR/Backup-$(date +%Y-%m-%d_%H-%M).txt"
 
 # Crie o arquivo "ncp-backup-configs" usando cat << EOF
 cat << EOF > /root/ncp-backup/ncp-backup-configs
@@ -170,30 +167,34 @@ cat << EOF > /root/ncp-backup/ncp-backup-configs
 DIR01="$datadirectory"
 
 # Ponto de Montagem do HD externo 
-DESTINATIONDIR="/media/myCloud/Backup"
+DESTINATIONDIR="$BACKUPDIR"
 
 # Caminho do Hd Externo (checar "fdisk -l")
-DEVICE="$DEVICE"
+DEVICE="/dev/$backup_name"
 
 # Lista de inclusao
-INCLIST="$INCLIST" 
+INCLIST="/root/ncp-backup/include.lst" 
 
 # Arquivo de Log		
-LOGFILE_PATH="$LOGFILE_PATH"
+LOGFILE_PATH="$BACKUPDIR/Backup-$(date +%Y-%m-%d_%H-%M).log"
 EOF
+################### END OF ncp-backup-configs ##################
 
 
+###################### include.lst ######################
 # Crie o arquivo "include.lst" usando cat << EOF
 cat << EOF > /root/ncp-backup/include.lst
 path/to/Documento/Abril
 path/to/Imagens/Ferias
 EOF
+################### END OF include.lst ##################
+
 
 # Torne os scripts executáveis
 chmod a+x /root/ncp-backup/backup.sh
 chmod a+x /root/ncp-backup/ncp-backup-configs
 
-echo "Arquivos de configuração e scripts criados com sucesso."
+echo "Instalação e configuração da rotina de backup do seu Nextcloud realizada com sucesso!"
 
-# ------------------ Fim das novas etapas ------------------
+
 
