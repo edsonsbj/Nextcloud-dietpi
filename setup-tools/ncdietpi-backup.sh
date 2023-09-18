@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Check if the user is in the Linux root directory
+if [ "$PWD" != "/" ]; then
+    echo "This script must be executed in the root directory of the system."
+    exit 1
+fi
+echo "Changing to the root directory..."
+cd /
+echo "pwd is $(pwd)"
+echo "location of the database backup file is " '/'
+
 # Execute lsblk com as colunas desejadas e capture a saída em um arquivo temporário
 lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID
 lsblk -o NAME,SIZE,RO,FSTYPE,TYPE,MOUNTPOINT,UUID,PTUUID | awk 'NR > 1 && $1 ~ /[0-9]+$/ { print $0 }' > lsblk_output.txt
