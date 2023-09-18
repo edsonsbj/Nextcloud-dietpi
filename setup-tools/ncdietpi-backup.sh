@@ -150,25 +150,38 @@ main
 # ------------------------------------------------------------------------ #
 EOF
 
+# Consulte o arquivo config.php do Nextcloud para obter o valor de datadirectory
+config_file="/var/www/nextcloud/config/config.php"
+datadirectory=$(grep -oP "(?<='datadirectory' => ')(.*)(?=')" "$config_file")
+
+# Configure DESTINATIONDIR, DEVICE e INCLIST
+DESTINATIONDIR="/media/myCloud/Backup"
+DEVICE="/dev/$backup_name"
+INCLIST="/root/ncp-backup/include.lst"
+
+# Crie o arquivo de log em /media/myCloudBackup
+LOGFILE_PATH="/media/myCloudBackup/Backup-$(date +%Y-%m-%d_%H-%M).txt"
+
 # Crie o arquivo "ncp-backup-configs" usando cat << EOF
 cat << EOF > /root/ncp-backup/ncp-backup-configs
 #!/bin/bash
 
 # Pastas para Backup e Restauração 
-DIR01="/path/to/Imagens"
+DIR01="$datadirectory"
 
 # Ponto de Montagem do HD externo 
-DESTINATIONDIR="/path/to/mount/external-hard-drive"
+DESTINATIONDIR="/media/myCloud/Backup"
 
 # Caminho do Hd Externo (checar "fdisk -l")
-DEVICE="/dev/sxx"
+DEVICE="$DEVICE"
 
 # Lista de inclusao
-INCLIST="/path/to/Rsync/include-lst" 
+INCLIST="$INCLIST" 
 
 # Arquivo de Log		
-LOGFILE_PATH="/path/to/Backup-\$(date +%Y-%m-%d_%H-%M).txt"
+LOGFILE_PATH="$LOGFILE_PATH"
 EOF
+
 
 # Crie o arquivo "include.lst" usando cat << EOF
 cat << EOF > /root/ncp-backup/include.lst
