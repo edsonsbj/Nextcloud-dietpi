@@ -13,11 +13,12 @@ options=()
 
 # Leia o arquivo temporário e processe as linhas
 while IFS= read -r line; do
-    name=$(echo "$line" | awk '{print $1}')
+    name=$(echo "$line" | awk '{print $1}' | sed 's/└─//g' | sed 's/─//g')
     options+=("$name")
     index=$((index + 1))
     echo -e "   $index) $name"
 done < lsblk_output.txt
+
 
 # Peça ao usuário para digitar o número correspondente à escolha do HDD de backup
 echo -n "Digite o número correspondente (1, 2, 3, ...) do HDD de backup: "
@@ -32,15 +33,22 @@ fi
 # Obtenha o NAME correspondente com base na escolha do usuário
 backup_name="${options[$choice - 1]}"
 
-# Verifique se a partição escolhida já está formatada como ext4
-if blkid -s TYPE -o value /dev/$backup_name | grep -qv "ext4"; then
+# Verifique o sistema de arquivos da partição escolhida
+fs_type=$(lsblk -o FSTYPE -n /dev/$backup_name)
+
+if [ "$fs_type" != "ext4" ]; then
     echo "A partição $backup_name não está formatada como ext4."
     echo -n "Deseja formatar a partição como ext4 (s/n)? "
     read format_option
     if [ "$format_option" == "s" ]; then
+        # Desmonte a partição se estiver montada
+        if grep -qs "/dev/$backup_name" /proc/mounts; then
+            sudo umount "/dev/$backup_name"
+        fi
+
         echo "Formatando a partição $backup_name como ext4..."
-        # Comente ou remova a linha abaixo para evitar formatação acidental
-        mkfs.ext4 /dev/$backup_name  # Formatar a partição como ext4
+        # Formate a partição como ext4
+        sudo mkfs.ext4 "/dev/$backup_name"
     else
         echo "Operação cancelada. Saindo."
         exit 1
