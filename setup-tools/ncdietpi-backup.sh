@@ -67,15 +67,19 @@ if [ "$fs_type" != "ext4" ]; then
     fi
 fi
 
-# Verifique se o Git está instalado e instale-o, se necessário
-if ! command -v git &> /dev/null; then
-    echo "3) Git não está instalado. Instalando..."
+# Verifique se o Git está instalado
+if command -v git &> /dev/null; then
+    echo "O Git já está instalado."
+else
+    echo "O Git não está instalado. Instalando..."
     sudo apt install git -y  # Instalar Git se não estiver instalado
 fi
 
-# Crie o diretório /media/myCloudBackup para montar o HD secundário
-if [ ! -d "/media/myCloudBackup" ]; then
-    echo "4) Criando o diretório /media/myCloudBackup..."
+# Verifique se a pasta /media/myCloudBackup já está criada
+if [ -d "/media/myCloudBackup" ]; then
+    echo "A pasta /media/myCloudBackup já está criada."
+else
+    echo "Criando a pasta /media/myCloudBackup..."
     sudo mkdir /media/myCloudBackup  # Criar o diretório se não existir
 fi
 
