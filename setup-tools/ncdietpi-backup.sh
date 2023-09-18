@@ -117,11 +117,12 @@ MOUNT_FILE="/proc/mounts"
 NULL_DEVICE="1> /dev/null 2>&1"
 REDIRECT_LOG_FILE="1>> \$LOGFILE_PATH 2>&1"
 
+######################################################## BACKUP ROUTINE CHECKIN ########################################################
 # O Dispositivo está Montado?
 grep -q "\$DEVICE" "\$MOUNT_FILE"
 if [ "\$?" != "0" ]; then
   # Se não, monte em \$DESTINATIONDIR
-  echo "---------- Dispositivo não montado. Monte \$DEVICE ----------" >> \$LOGFILE_PATH
+  echo "[!] Dispositivo não montado. Monte \$DEVICE ." >> \$LOGFILE_PATH
   eval mount -t auto "\$DEVICE" "\$DESTINATIONDIR" "\$NULL_DEVICE"
 else
   # Se sim, grep o ponto de montagem e altere o \$DESTINATIONDIR
@@ -132,20 +133,20 @@ cd "/"
 
 # Há permissões de excrita e gravação?
 [ ! -w "\$DESTINATIONDIR" ] && {
-  echo "---------- Não tem permissões de gravação ----------" >> \$LOGFILE_PATH
+  echo "[!] Não tem permissões de gravação." >> \$LOGFILE_PATH
   exit 1
 }
-## ------------------------------------------------------------------------ #
 
-  echo "---------- Iniciando Backup. ----------" >> \$LOGFILE_PATH
+  echo "[!]  Iniciando Backup..." >> \$LOGFILE_PATH
+##################################################### END OF BACKUP ROUTINE CHECKIN ####################################################
 
-# -------------------------------FUNCTIONS----------------------------------------- #
+######################################################## BACKUP FUNCTIONS ########################################################
 backup() {
 sudo rsync -avh --delete --progress "\$DIR01" "\$DESTINATIONDIR" --files-from "\$INCLIST" 1>> \$LOGFILE_PATH
 
   # Funcionou bem? Remova a Midia Externa.
   [ "\$?" = "0" ] && {
-    echo "---------- Backup Finalizado. Desmonte a Unidade \$DEVICE ----------" >> \$LOGFILE_PATH
+    echo [!] Backup Finalizado. Desmonte a Unidade \$DEVICE ." >> \$LOGFILE_PATH
  	eval umount "\$DEVICE" "\$NULL_DEVICE"
 	eval sudo udisksctl power-off -b "\${DEVICE}" >>\$LOGFILE_PATH
     exit 0
@@ -161,11 +162,10 @@ main () {
   preparelogfile
   backup
 }
-# ------------------------------------------------------------------------ #
+##################################################### END OF BACKUP FUNCTIONS ####################################################
 
-# -------------------------------EXECUTION----------------------------------------- #
+
 main
-# ------------------------------------------------------------------------ #
 EOF
 ######################################################## END OF BACKUP ROUTINE ########################################################
 
