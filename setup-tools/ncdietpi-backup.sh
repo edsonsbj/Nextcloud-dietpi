@@ -118,180 +118,116 @@ rm lsblk_output.txt
 
 
 
-
-
-
-######################################################## [!] CREATING BACKUP ROUTINE ########################################################
-# Crie o arquivo "backup.sh" usando cat << EOF
-cat << EOF > /root/ncp-backup/ncp-backup-routine.sh
-#!/usr/bin/env bash
-
-
-
-######################################################## HEADER ########################################################
-# Script Simples para a realização de backup e restauração de pastas e arquivos usando Rsync em HD Externo
-
-# Adicione aqui o caminho para o Arquivo Configs
-CONFIG="$BACKUPDIR"
-
-. \${CONFIG}
-
-# NÃO ALTERE
-MOUNT_FILE="/proc/mounts"
-NULL_DEVICE="1> /dev/null 2>&1"
-REDIRECT_LOG_FILE="1>> \$LOGFILE_PATH 2>&1"
-##################################################### END OF HEADER ####################################################
-
-
-
-######################################################## BACKUP ROUTINE CHECKIN ########################################################
-# O Dispositivo está Montado?
-grep -q "\$DEVICE" "\$MOUNT_FILE"
-if [ "\$?" != "0" ]; then
-  # Se não, monte em \$DESTINATIONDIR
-  echo "[!] Dispositivo não montado. Monte \$DEVICE ." >> \$LOGFILE_PATH
-  eval mount -t auto "\$DEVICE" "\$DESTINATIONDIR" "\$NULL_DEVICE"
-else
-  # Se sim, grep o ponto de montagem e altere o \$DESTINATIONDIR
-  DESTINATIONDIR=\$(grep "\$DEVICE" "\$MOUNT_FILE" | cut -d " " -f 2)
-fi
-
-cd "/"
-
-# Há permissões de excrita e gravação?
-[ ! -w "\$DESTINATIONDIR" ] && {
-  echo "[!] Não tem permissões de gravação." >> \$LOGFILE_PATH
-  exit 1
-}
-
-  echo "[!]  Iniciando Backup..." >> \$LOGFILE_PATH
-##################################################### END OF BACKUP ROUTINE CHECKIN ####################################################
-
-
-
-######################################################## BACKUP FUNCTIONS ########################################################
-backup() {
-sudo rsync -avh --delete --progress "\$DIR01" "\$DESTINATIONDIR" --files-from "\$INCLIST" 1>> \$LOGFILE_PATH
-
-  # Funcionou bem? Remova a Midia Externa.
-  [ "\$?" = "0" ] && {
-    echo [!] Backup Finalizado. Desmonte a Unidade \$DEVICE ." >> \$LOGFILE_PATH
- 	eval umount "\$DEVICE" "\$NULL_DEVICE"
-	eval sudo udisksctl power-off -b "\${DEVICE}" >>\$LOGFILE_PATH
-    exit 0
-  }
-}
-
-preparelogfile () {
-  # Insira um cabeçalho simples no arquivo de log com o carimbo de data/hora
-  echo "----------[ \$(date) ]----------" >> \$LOGFILE_PATH
-}
-
-main () {
-  preparelogfile
-  backup
-}
-##################################################### END OF BACKUP FUNCTIONS ####################################################
-
-
-
-main
-EOF
-################################################## [!] END OF CREATING BACKUP ROUTINE #################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-######################################################## ncp-backup-configs ########################################################
-# Consulte o arquivo config.php do Nextcloud para obter o valor de datadirectory
-config_file="/var/www/nextcloud/config/config.php"
-
-if [ -f "$config_file" ]; then
-    datadirectory=$(grep -oP "(?<='datadirectory' => ')(.*)(?=')" "$config_file")
-else
-    echo "Arquivo de configuração não encontrado em $config_file."
-    exit 1
-fi
-
-# Crie o arquivo de log em $BACKUPDIR
-LOGFILE_PATH="$BACKUPDIR/Backup-$(date +%Y-%m-%d_%H-%M).txt"
-
-# Crie o arquivo "ncp-backup-configs" usando cat << EOF
-cat << EOF > /root/ncp-backup/ncp-backup-configs
 #!/bin/bash
 
-# Pastas para Backup e Restauração 
-DIR01="$datadirectory"
+#
+# Pre defined variables
+#
+uuid='05E1A73C04E337C0'
+BackupDir='/mnt/nextcloud_backup'
+NextcloudConfig='/var/www/nextcloud'
+NextcloudDataDir=$(sudo -u www-data $NextcloudConfig/occ config:system:get datadirectory)
+DatabaseSystem=$(sudo -u www-data $NextcloudConfig/occ config:system:get dbtype)
+NextcloudDatabase=$(sudo -u www-data $NextcloudConfig/occ config:system:get dbname)
+DBUser=$(sudo -u www-data $NextcloudConfig/occ config:system:get dbuser)
+DBPassword=$(sudo -u www-data $NextcloudConfig/occ config:system:get dbpassword)
+BackupRestoreConf='BackupRestore.conf'
 
-# Ponto de Montagem do HD externo 
-DESTINATIONDIR="$BACKUPDIR"
+# Function for error messages
+errorecho() { cat <<< "$@" 1>&2; }
 
-# Caminho do Hd Externo (checar "fdisk -l")
-DEVICE="/dev/$backup_name"
+#
+# Check for root
+#
+if [ "$(id -u)" != "0" ]
+then
+	errorecho "ERROR: This script has to be run as root!"
+	exit 1
+fi
 
-# Lista de inclusao
-INCLIST="/root/ncp-backup/include.lst" 
+#
+# Gather information
+#
+clear
 
-# Arquivo de Log		
-LOGFILE_PATH="$BACKUPDIR/Backup-$(date +%Y-%m-%d_%H-%M).log"
-EOF
-######################################################## END OF ncp-backup-configs ########################################################
+# echo "Enter the directory to which the backups should be saved."
+echo "Enter the UUID of the drive"
+echo "Default: ${uuid}"
+echo ""
+read -p "Enter the UUID corresponding to the unit that will serve as a backup or press ENTER if the UUID is ${uuid}: " UUID
 
+[ -z "$UUID" ] ||  uuid=$UUID
+clear
 
+echo "Enter the backup drive mount point here."
+echo "Default: ${BackupDir}"
+echo ""
+read -p "Enter a directory or press ENTER if the backup directory is ${BackupDir}: " BACKUPDIR
 
+[ -z "$BACKUPDIR" ] ||  BackupDir=$BACKUPDIR
+clear
 
+echo "Enter the path to the Nextcloud file directory."
+echo "Usually: ${NextcloudConfig}"
+echo ""
+read -p "Enter a directory or press ENTER if the file directory is ${NextcloudConfig}: " NEXTCLOUDCONF
 
+[ -z "$NEXTCLOUDCONF" ] ||  NextcloudConfig=$NEXTCLOUDCONF
+clear
 
+echo "UUID: ${uuid}"
+echo "BackupDir: ${BackupDir}"
+echo "NextcloudConfig: ${NextcloudConfig}"
+echo "NextcloudDataDir: ${NextcloudDataDir}"
 
+read -p "Is the information correct? [y/N] " CORRECTINFO
 
+if [ "$CORRECTINFO" != 'y' ] ; then
+  echo ""
+  echo "ABORTING!"
+  echo "No file has been altered."
+  exit 1
+fi
 
+{ echo "# Configuration for Backup-Restore scripts"
+  echo ""
+  echo "# TODO: The uuid of the backup drive"
+  echo "uuid='$uuid'"
+  echo ""
+  echo "# TODO: The Backup Drive Mount Point"
+  echo "BackupDir='$BackupDir'"
+  echo ""
+  echo "# TODO: The directory of your Nextcloud installation (this is a directory under your web root)"
+  echo "NextcloudConfig='$NextcloudConfig'"
+  echo ""
+  echo "# TODO: The directory of your Nextcloud data directory (outside the Nextcloud file directory)"
+  echo "# If your data directory is located in the Nextcloud files directory (somewhere in the web root),"
+  echo "# the data directory must not be a separate part of the backup"
+  echo "NextcloudDataDir='$NextcloudDataDir'"
+  echo ""
+  echo "# TODO: The name of the database system (one of: mysql, mariadb, postgresql)"
+  echo "# 'mysql' and 'mariadb' are equivalent, so when using 'mariadb', you could also set this variable to 'mysql'" and vice versa.
+  echo "DatabaseSystem='$DatabaseSystem'"
+  echo ""
+  echo "# TODO: Your Nextcloud database name"
+  echo "NextcloudDatabase='$NextcloudDatabase'"
+  echo ""
+  echo "# TODO: Your Nextcloud database user"
+  echo "DBUser='$DBUser'"
+  echo ""
+  echo "# TODO: The password of the Nextcloud database user"
+  echo "DBPassword='$DBPassword'"
+  echo ""
+  echo "# Backup Destinations"
 
+  echo ""
+  echo "# Log File"
+  echo "LOG_PATH='/var/log/'"
 
+ } > ./"${BackupRestoreConf}"
 
-
-
-
-######################################################## include.lst ########################################################
-# Crie o arquivo "include.lst" usando cat << EOF
-cat << EOF > /root/ncp-backup/include.lst
-path/to/Documento/Abril
-path/to/Imagens/Ferias
-EOF
-######################################################## END OF include.lst ########################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Torne os scripts executáveis
-chmod a+x /root/ncp-backup/backup.sh
-chmod a+x /root/ncp-backup/ncp-backup-configs
-
-echo "Executando o backup..."
-sudo /root/ncp-backup/backup.sh
-
-echo "Agendando o backup no Cron para rodar às 4 da manhã..."
-(crontab -l 2>/dev/null; echo "0 4 * * * /root/ncp-backup/backup.sh") | crontab -
-
-echo "Instalação e configuração da rotina de backup do seu Nextcloud realizada com sucesso!"
+echo ""
+echo "Done!"
+echo ""
+echo ""
+echo "IMPORTANT: Please check $BackupRestoreConf if all variables were set correctly BEFORE running the backup/restore scripts!"
