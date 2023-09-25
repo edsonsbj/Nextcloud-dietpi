@@ -5,7 +5,7 @@
 # FAST PATH
 For those of you who are already familiar with this repository. 
 
- 	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && rm nextcloud/README.md && sudo mv nextcloud/*.* / && sudo chmod +x *.sh && sudo chmod +x /setup-tools/*.sh && sudo ./ncdietpi.sh
+ 	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && rm nextcloud/README.md && sudo mv nextcloud/*.* / && sudo chmod +x *.sh && sudo chmod +x /nextcloud/setup-tools/*.sh && sudo ./ncdietpi.sh
 
 # NEXTCLOUD in DietPI for Native PC (Bios/CSM)
 
@@ -76,7 +76,7 @@ After the install OS the system will shutdown. Remove the flash usb, turn on PC 
 
 Copy and paste the command below in the screen above.  It can take a while. Be patience and wait for the screen below
 
- 	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && sudo mv nextcloud/*.sh / && sudo chmod +x *.sh && sudo ./ncdietpi.sh
+ 	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && rm nextcloud/README.md && sudo mv nextcloud/*.* / && sudo chmod +x *.sh && sudo chmod +x /nextcloud/setup-tools/*.sh && sudo ./ncdietpi.sh
 
 ⚠️ ⚠️ ⚠️  If... BIG IF here... the screen below shows up, choose Apache. But if it don't shows up... relax and continue.
 ![image](https://github.com/lstavares84/nextcloud/assets/61010791/b65c5684-39d7-447b-8cef-3aa5f85f836d)
