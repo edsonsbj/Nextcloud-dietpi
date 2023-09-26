@@ -3,16 +3,18 @@
 </p>
 
 # FAST PATH
-For those of you who are already familiar with this repository. 
+:uk: For those of you who are already familiar with this repository and just need the command line below:
+:brazil: Para aqueles que já conhecem esse repositório e só precisam da linha de comando abaixo:
 
  	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && rm nextcloud/README.md && sudo mv nextcloud/*.* / && sudo chmod +x *.sh && sudo chmod +x /nextcloud/setup-tools/*.sh && sudo ./ncdietpi.sh
 
-# NEXTCLOUD in DietPI for Native PC (Bios/CSM)
+# ABOUT NEXTCLOUD in DietPI for Native PC (Bios/CSM)
 
 Scripts to automate the installation and configuration of Nextcloud on PCs (Not for SBC, Raspberry Pi, Orange, Rock, ect.)
 Written in partnership with @edsonsbj (https://github.com/edsonsbj). Thanks a lot, pal!
 
-# THIS SCRIPT WAS TESTED IN:
+THIS SCRIPT WAS TESTED IN:
+
 	[ ] Raspberry Pi 4B+
 	[ ] Raspberry Pi 400
 	[X] PC Bios
