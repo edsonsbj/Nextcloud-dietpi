@@ -10,10 +10,13 @@
 
 # ABOUT NEXTCLOUD in DietPI for Native PC (Bios/CSM)
 
-Scripts to automate the installation and configuration of Nextcloud on PCs (Not for SBC, Raspberry Pi, Orange, Rock, ect.)
-Written in partnership with @edsonsbj (https://github.com/edsonsbj). Thanks a lot, pal!
+:uk: Scripts to automate the installation and configuration of Nextcloud on PCs (Not for SBC, Raspberry Pi, Orange, Rock, ect.).
+Written in partnership with @edsonsbj (https://github.com/edsonsbj). Thanks a lot, pal!<br/> 
 
-THIS SCRIPT WAS TESTED IN:
+:brazil: Script que automatiza a instalação e configuração do Nextcloud em PCs (não em SBC, Raspberry Pi, Orage, Rock, etc.).
+Escrito em parceria com @edsonbj (https://github.com/edsonsbj). TMJ, parceiro!<br/> 
+
+:uk: THIS SCRIPT WAS TESTED IN: / :brazil: ESTE SCRIPT FOI TESTADO EM:
 
 	[ ] Raspberry Pi 4B+
 	[ ] Raspberry Pi 400
