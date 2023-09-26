@@ -3,7 +3,7 @@
 </p>
 
 # FAST PATH
-:uk: For those of you who are already familiar with this repository and just need the command line below:
+:uk: For those of you who are already familiar with this repository and just need the command line below:<br/> 
 :brazil: Para aqueles que já conhecem esse repositório e só precisam da linha de comando abaixo:
 
  	cd / && sudo apt install git -y && git clone https://github.com/lstavares84/nextcloud.git && rm nextcloud/README.md && sudo mv nextcloud/*.* / && sudo chmod +x *.sh && sudo chmod +x /nextcloud/setup-tools/*.sh && sudo ./ncdietpi.sh
